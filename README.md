@@ -9,7 +9,9 @@ TCP protokol pruža pouzdanu, konekcijski orijentisanu komunikaciju između kraj
 ### Three-way handshake
 Uspostava TCP konekcije realizuje se putem three-way handshake mehanizma, koji osigurava da su i klijent i server spremni za pouzdanu komunikaciju. Proces se sastoji od tri koraka: slanja SYN poruke od klijenta ka serveru, zatim odgovora servera sa SYN+ACK porukom, te završne ACK poruke od strane klijenta prikazane pomoću sekvencijalnog dijagrama na Slici 1 [1].
 
-![Slika 1: TCP three-way handshake](images/three_way_handshake.png)
+![Slika 1: TCP three-way handshake](images/three_way_handshake.png) 
+
+Slika 1: TCP three-way handshake
 
 U okviru ovog projekta implementirana je klijentska strana TCP three-way handshake procesa, pri čemu se serverska strana posmatra kao eksterni entitet.
 
@@ -19,6 +21,8 @@ TCP segment se sastoji od zaglavlja (header) i podatkovnog dijela. Zaglavlje TCP
 Struktura TCP segmenta prikazana je na Slici 2.
 
 ![Slika 2: Struktura TCP segmenta](images/tcp_structure_segment.png)
+
+Slika 2: Struktura TCP segmenta
 
 ### Scenariji razmjene poruka
 #### Scenarij 1: Uspješna uspostava TCP konekcije
@@ -36,30 +40,77 @@ Prijenos podataka se vrši isključivo u taktovima u kojima su signali `valid` i
 Navedeni scenariji predstavljaju osnovu za modeliranje upravljačke logike pomoću FSM dijagrama, kao i za izradu WaveDrom dijagrama koji grafički prikazuju ponašanje signala kroz vrijeme.
 
 ## Opis dizajna modula
-Modul `tcp_client` realizuje klijentsku stranu TCP three-way handshake procesa u obliku digitalnog sklopa. Funkcionalnost modula je organizovana oko upravljačke logike implementirane kao konačni automat (FSM), koji upravlja redoslijedom slanja i prijema TCP segmenata. Komunikacija sa okruženjem ostvarena je putem Avalon-ST interfejsa sa ready/valid rukovanjem, dok signal `is_connected` služi kao indikator uspješno uspostavljene TCP konekcije.
+Modul `tcp_client` realizuje klijentsku stranu TCP three-way handshake procesa u obliku digitalnog sklopa. Funkcionalnost modula je organizovana oko upravljačke logike implementirane kao konačni automat (FSM), koji upravlja redoslijedom slanja i prijema TCP segmenata tokom uspostave konekcije.. Komunikacija sa okruženjem ostvarena je putem Avalon-ST interfejsa sa ready/valid rukovanjem, dok signal `is_connected` služi kao indikator uspješno uspostavljene TCP konekcije.
 
 ![Slika 3: Blok dijagram modula tcp_client](images/block_diagram.png)
 
-## Modeliranje upravljačke logike
-### FSM dijagram
-dodati naknadno
-### Opis FSM stanja
+Slika 3: Blok dijagram modula tcp_client
 
 ## Interfejs i signali
+U nastavku su opisani ulazni i izlazni signali modula `tcp_client` koji čine njegov interfejs prema okruženju.
+
 ### Ulazni signali
+
+- **clock**  
+  Sistemski takt koji sinhronizuje rad modula.
+
+- **reset**  
+  Asinhroni ili sinhroni reset signal kojim se modul vraća u početno stanje.
+
+- **connect**  
+  Signal kojim se inicira proces uspostave TCP konekcije.
+
+- **server_mac**, **server_ip**, **server_port**  
+  Parametri koji definišu MAC adresu, IP adresu i port servera sa kojim se uspostavlja TCP konekcija.
+
+- **client_mac**, **client_ip**, **client_port**  
+  Parametri koji definišu MAC adresu, IP adresu i port klijenta.
+
+- **in_data**  
+  Ulazni podatkovni signal Avalon-ST interfejsa koji nosi bajtove primljenog TCP segmenta (dolazi sa servera/mreže).
+
+- **in_valid**  
+  Signal koji označava da su podaci na signalu `in_data` važeći.
+
+- **in_sop**, **in_eop**  
+  Signali koji označavaju početak i kraj TCP segmenta.
+
+- **out_ready**  
+  Signal kojim okruženje označava spremnost za prihvatanje izlaznih podataka.
+
 ### Izlazni signali
 
-## Ready/Valid mehanizam (Avalon-ST)
+- **out_data**  
+  Izlazni podatkovni signal Avalon-ST interfejsa koji nosi bajtove TCP segmenta koji se šalje (prema serveru).
+
+- **out_valid**  
+  Signal koji označava da su podaci na signalu `out_data` važeći.
+
+- **out_sop**, **out_eop**  
+  Signali koji označavaju početak i kraj TCP segmenta na izlazu.
+
+- **in_ready**  
+  Signal kojim modul označava spremnost za prihvatanje ulaznih podataka.
+
+- **is_connected**  
+  Statusni signal koji označava da je TCP konekcija uspješno uspostavljena.
+
+
+## Ready/Valid rukovanje (Avalon-ST)
+
+Prijenos podataka na Avalon-ST interfejsu realizuje se korištenjem ready/valid rukovanja. Prenos/prijem podataka će se vršiti isključivo u taktovima u kojima su signali `valid` i `ready` istovremeno aktivni. U slučaju da jedan od signala nije aktivan, prijenos ili prijem podataka se odgađa bez gubitka informacija. Ovakav mehanizam omogućava pouzdanu sinhronizaciju između modula različitih brzina rada.
+
+
+## Modeliranje upravljačke logike
+### FSM dijagram
+### Opis FSM stanja
 
 ## Simulacija i verifikacija
 ### WaveDrom dijagrami
 ### Opis testnih scenarija
 
 ## Implementacija
-### VHDL struktura modula
-### Korišteni alati
 
-## Zaključak
 
 ## Literatura
 [1] Kurose, James F., and Keith W. Ross. "Computer networking: A top-down approach edition." Addision Wesley 12 (2007).
