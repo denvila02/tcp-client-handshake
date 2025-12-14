@@ -22,7 +22,7 @@ Struktura TCP segmenta prikazana je na Slici 2.
 
 ![Slika 2: Struktura TCP segmenta](images/tcp_structure_segment.png)
 
-Slika 2: Struktura TCP segmenta
+Slika 2: Struktura TCP segmenta [1]
 
 ### Scenariji razmjene poruka
 #### Scenarij 1: Uspješna uspostava TCP konekcije
