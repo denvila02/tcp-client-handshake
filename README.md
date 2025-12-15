@@ -24,23 +24,20 @@ Struktura TCP segmenta prikazana je na Slici 2.
 
 Slika 2: Struktura TCP segmenta [1]
 
-### Scenariji razmjene poruka
-#### Scenarij 1: Uspješna uspostava TCP konekcije
+### Tok uspostave TCP konekcije (klijentska strana)
+#### Slučaj 1: Uspješna uspostava konekcije
 
-Scenarij prikazuje standardni tok uspostave TCP konekcije između klijenta i servera korištenjem three-way handshake mehanizma. Proces započinje kada korisnik aktivira signal `connect`, čime klijentski modul inicira uspostavu konekcije.
+Slučaj prikazuje standardni three-way handshake proces. Nakon aktivacije signala `connect`, klijent šalje TCP SYN segment prema serveru. Server odgovara SYN+ACK segmentom, nakon čega klijent šalje završni ACK segment. Uspješna uspostava konekcije indicira se postavljanjem signala `is_connected` na logičku vrijednost '1'.
 
-Klijent najprije šalje TCP SYN segment prema serveru. Nakon toga server odgovara SYN+ACK segmentom, koji klijent prima i provjerava. Na osnovu ispravnog odgovora, klijent šalje završni ACK segment, čime se TCP konekcija smatra uspješno uspostavljenom.  Uspješna konekcija se indicira signalom `is_connected`, te se signal postavlja na logičku vrijednost '1'.
+#### Slučaj 2: Izostanak odgovora servera
 
-#### Scenarij 2: Čekanje na spremnost prijemnika
+Nakon slanja TCP SYN segmenta, klijent ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne prelazi u završnu fazu uspostave konekcije, pri čemu signal `is_connected` ostaje na logičkoj vrijednosti '0'.
 
-Tokom slanja i prijema TCP segmenata, modul koristi Avalon-ST ready/valid mehanizam za sinhronizaciju komunikacije sa okruženjem. Ukoliko prijemnik, odnosno server, nije spreman za prihvatanje podataka, signal `out_ready` ostaje neaktivan, a klijentski modul zadržava podatke bez njihovog slanja.
-
-Prijenos podataka se vrši isključivo u taktovima u kojima su signali `valid` i `ready` istovremeno aktivni. Na isti način, prijem TCP segmenta se obavlja samo kada su signali `in_valid` i `in_ready` aktivni u istom taktu. U suprotnom, modul ostaje u odgovarajućem stanju i čeka dok uslovi za prijem ili slanje ne budu ispunjeni. Ovakav mehanizam osigurava pouzdan prijenos podataka bez gubitka tokom procesa uspostave TCP konekcije.
-
-Navedeni scenariji predstavljaju osnovu za modeliranje upravljačke logike pomoću FSM dijagrama, kao i za izradu WaveDrom dijagrama koji grafički prikazuju ponašanje signala kroz vrijeme.
+Navedeni slučajevi predstavljaju osnovu za modeliranje upravljačke logike pomoću FSM dijagrama, kao i za definisanje scenarija, te izradu WaveDrom dijagrama koji grafički prikazuju ponašanje signala kroz vrijeme.
 
 ## Opis dizajna modula
-Modul `tcp_client` realizuje klijentsku stranu TCP three-way handshake procesa u obliku digitalnog sklopa. Funkcionalnost modula je organizovana oko upravljačke logike implementirane kao konačni automat (FSM), koji upravlja redoslijedom slanja i prijema TCP segmenata tokom uspostave konekcije.. Komunikacija sa okruženjem ostvarena je putem Avalon-ST interfejsa sa ready/valid rukovanjem, dok signal `is_connected` služi kao indikator uspješno uspostavljene TCP konekcije.
+
+Modul `tcp_client` realizuje klijentsku stranu uspostave TCP konekcije. Upravljačka logika je implementirana kao konačni automat (FSM) koji upravlja redoslijedom slanja i prijema TCP segmenata, dok se komunikacija sa okruženjem ostvaruje putem Avalon-ST interfejsa.
 
 ![Slika 3: Blok dijagram modula tcp_client](images/block_diagram.png)
 
@@ -95,20 +92,36 @@ U nastavku su opisani ulazni i izlazni signali modula `tcp_client` koji čine nj
 - **is_connected**  
   Statusni signal koji označava da je TCP konekcija uspješno uspostavljena.
 
-
 ## Ready/Valid rukovanje (Avalon-ST)
 
-Prijenos podataka na Avalon-ST interfejsu realizuje se korištenjem ready/valid rukovanja. Prenos/prijem podataka će se vršiti isključivo u taktovima u kojima su signali `valid` i `ready` istovremeno aktivni. U slučaju da jedan od signala nije aktivan, prijenos ili prijem podataka se odgađa bez gubitka informacija. Ovakav mehanizam omogućava pouzdanu sinhronizaciju između modula različitih brzina rada.
+Prijenos podataka na Avalon-ST interfejsu realizuje se korištenjem ready/valid rukovanja. Prijenos ili prijem podataka vrši se isključivo u taktovima u kojima su signali `valid` i `ready` istovremeno aktivni, dok se u suprotnom prenos odgađa bez gubitka informacija.
 
+## Simulacija i verifikacija
+### Opis testnih scenarija
+
+Verifikacija funkcionalnosti modula `tcp_client` vrši se simulacijom karakterističnih testnih scenarija koji pokrivaju uspostavu TCP konekcije i ponašanje modula u prisustvu ready/valid rukovanja na Avalon-ST interfejsu.
+
+#### Testni scenarij 1: Uspješna uspostava TCP konekcije
+
+Simulira se standardni three-way handshake proces. Nakon aktivacije signala `connect`, modul generiše TCP SYN segment koji se šalje prema serveru. Server odgovara SYN+ACK segmentom koji se ispravno prima preko ulaznog Avalon-ST interfejsa (`in_valid`, `in_sop`, `in_eop`). Na osnovu primljenog odgovora, modul šalje završni ACK segment i postavlja signal `is_connected` na logičku vrijednost '1', čime se potvrđuje uspješna uspostava TCP konekcije.
+
+Wavedrom dodat
+
+#### Testni scenarij 2: Izostanak očekivanog SYN+ACK odgovora
+
+U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Signal `is_connected` ostaje na logičkoj vrijednosti '0', čime se potvrđuje da konekcija nije uspostavljena.
+
+Wavedrom dodat
+
+#### Testni scenarij 3: Odgoda prenosa usljed ready/valid rukovanja
+
+Ovaj testni scenarij provjerava ispravnost ready/valid mehanizma Avalon-ST interfejsa. Tokom slanja TCP segmenta, signal `out_ready` se privremeno postavlja na logičku vrijednost '0', čime se simulira nespremnost prijemnika. Modul zadržava izlazne podatke i ne vrši prenos sve dok `out_ready` ne postane aktivan. Prijenos se nastavlja u taktovima u kojima su signali `out_valid` i `out_ready` istovremeno aktivni, bez gubitka podataka ili narušavanja redoslijeda segmenata.
+
+Wavedrom dodat
 
 ## Modeliranje upravljačke logike
 ### FSM dijagram
 ### Opis FSM stanja
-
-## Simulacija i verifikacija
-### WaveDrom dijagrami
-### Opis testnih scenarija
-
 ## Implementacija
 
 
