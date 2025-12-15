@@ -124,6 +124,7 @@ Wavedrom dodat
 ### Opis FSM stanja
 ## Implementacija
 
+## Zaključak
 
 ## Literatura
 [1] Kurose, James F., and Keith W. Ross. "Computer networking: A top-down approach edition." Addision Wesley 12 (2007).
