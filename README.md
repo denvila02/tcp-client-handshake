@@ -64,7 +64,7 @@ U nastavku su opisani ulazni i izlazni signali modula `tcp_client` koji čine nj
   Parametri koji definišu MAC adresu, IP adresu i port klijenta.
 
 - **in_data**  
-  Ulazni podatkovni signal Avalon-ST interfejsa koji nosi bajtove primljenog TCP segmenta (dolazi sa servera/mreže).
+  Ulazni podatkovni signal Avalon-ST interfejsa koji nosi bajtove primljenog TCP segmenta (dolazi sa servera).
 
 - **in_valid**  
   Signal koji označava da su podaci na signalu `in_data` važeći.
@@ -73,7 +73,7 @@ U nastavku su opisani ulazni i izlazni signali modula `tcp_client` koji čine nj
   Signali koji označavaju početak i kraj TCP segmenta.
 
 - **out_ready**  
-  Signal kojim okruženje označava spremnost za prihvatanje izlaznih podataka.
+  Signal kojim strana servera označava spremnost za prihvatanje izlaznih podataka.
 
 ### Izlazni signali
 
@@ -87,7 +87,7 @@ U nastavku su opisani ulazni i izlazni signali modula `tcp_client` koji čine nj
   Signali koji označavaju početak i kraj TCP segmenta na izlazu.
 
 - **in_ready**  
-  Signal kojim modul označava spremnost za prihvatanje ulaznih podataka.
+  Signal kojim modul (klijentska strana) označava spremnost za prihvatanje ulaznih podataka.
 
 - **is_connected**  
   Statusni signal koji označava da je TCP konekcija uspješno uspostavljena.
