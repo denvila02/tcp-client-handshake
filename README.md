@@ -103,7 +103,7 @@ Verifikacija funkcionalnosti modula `tcp_client` vrši se simulacijom karakteris
 
 #### Testni scenarij 1: Uspješna uspostava TCP konekcije
 
-Simulira se standardni three-way handshake proces. Nakon aktivacije signala `connect`, modul generiše TCP SYN segment koji se šalje prema serveru. Server odgovara SYN+ACK segmentom koji se ispravno prima preko ulaznog Avalon-ST interfejsa (`in_valid`, `in_sop`, `in_eop`). Na osnovu primljenog odgovora, modul šalje završni ACK segment i postavlja signal `is_connected` na logičku vrijednost '1', čime se potvrđuje uspješna uspostava TCP konekcije.
+Simulira se standardni three-way handshake proces. Nakon aktivacije signala `connect`, modul generiše TCP SYN segment koji se šalje prema serveru. To će značiti da se formira segment kao na slici 2, sa SYN flag-om postavljenim na 1 te dodatno podešenim ostalim poljima TCP segmenta (kao što su 16-bitni izvorišni i destinacijski port). Taj segment će se slati preko 8-bitnog podatkovnog izlaza (`out_data`). Server odgovara SYN+ACK segmentom (SYN i ACK flag-ovi postavljeni na 1) koji se ispravno prima preko ulaznog Avalon-ST interfejsa (`in_data`, `in_valid`, `in_sop`, `in_eop`). Na osnovu primljenog odgovora, modul šalje završni ACK segment (ACK na 1) i postavlja signal `is_connected` na logičku vrijednost '1', čime se potvrđuje uspješna uspostava TCP konekcije.
 
 Wavedrom dodat
 
