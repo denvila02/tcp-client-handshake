@@ -13,16 +13,26 @@ Uspostava TCP konekcije realizuje se putem three-way handshake mehanizma, koji o
 
 Slika 1: TCP three-way handshake
 
-U okviru ovog projekta implementirana je klijentska strana TCP three-way handshake procesa, pri čemu se serverska strana posmatra kao eksterni entitet.
+U okviru ovog projekta implementirana je klijentska strana TCP three-way handshake procesa, pri čemu se serverska strana posmatra kao eksterni entitet. Važno je napomenuti da se prilikom uspostave konekcije prenose Ethernet okviri u kojima je enkapsuliran IPv4, dok je u IPv4 enkapsuliran TCP segment što je detaljno objašnjeno u nastavku dokumenta.
 
-### Struktura TCP segmenta
-TCP segment se sastoji od zaglavlja (header) i podatkovnog dijela. Zaglavlje TCP segmenta sadrži izvorni i odredišni port, sekvencijski broj, potvrđujući broj, kao i kontrolne flagove koji upravljaju uspostavom i prekidom konekcije. Flagovi SYN i ACK su posebno značajni jer se koriste tokom three-way handshake procesa. U tipičnoj implementaciji TCP protokola, zaglavlje segmenta ima minimalnu dužinu od 20 bajtova, dok se tokom uspostave konekcije ne prenose aplikacioni podaci. [1] 
+### Sadržaj i enkapsulacija prenesenih paketa
+Prilikom analize razmjene poruka tokom uspostave TCP konekcije, neophodno je posmatrati kompletan Ethernet/IP/TCP paket.
 
-Struktura TCP segmenta prikazana je na Slici 2.
+Ethernet zaglavlje sadrži sljedeća polja od interesa: izvorišna i odredišna MAC adresa, kao i polje EtherType koje označava da se u podatkovnom dijelu nalazi IPv4 paket (vrijednost 0x0800).
 
-![Slika 2: Struktura TCP segmenta](images/tcp_structure_segment.png)
+![Slika 2: Struktura Ethernet okvira](images/ethernet%20_frame.jpg)
 
-Slika 2: Struktura TCP segmenta [1]
+IPv4 zaglavlje sadrži izvorne i odredišne IP adrese, TTL polje, ukupnu dužinu paketa, kao i polje Protocol koje ima vrijednost 6 i označava da se u podatkovnom dijelu nalazi TCP segment.
+
+![Slika 3: Struktura IPv4 okvira](images/ipv4.jpg)
+
+TCP segment se sastoji od zaglavlja (header) i podatkovnog dijela. Zaglavlje TCP segmenta sadrži izvorni i odredišni port, sekvencijski broj, potvrđujući broj, veličinu prozora, opcionalna polja, kao i kontrolne flagove koji upravljaju uspostavom i prekidom konekcije. Flagovi SYN i ACK su posebno značajni jer se koriste tokom three-way handshake procesa. U tipičnoj implementaciji TCP protokola, zaglavlje segmenta ima minimalnu dužinu od 20 bajtova, dok se tokom uspostave konekcije ne prenose aplikacioni podaci. [1] 
+
+Struktura TCP segmenta prikazana je na Slici 4.
+
+![Slika 4: Struktura TCP segmenta](images/tcp_structure_segment.png)
+
+Slika 4: Struktura TCP segmenta [1]
 
 ### Tok uspostave TCP konekcije (klijentska strana)
 #### Slučaj 1: Uspješna uspostava konekcije
