@@ -41,6 +41,12 @@ Slučaj prikazuje standardni three-way handshake proces. Nakon aktivacije signal
 
 Nakon slanja TCP SYN segmenta, klijent ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne prelazi u završnu fazu uspostave konekcije, pri čemu signal `is_connected` ostaje na logičkoj vrijednosti '0'.
 
+#### Slučaj 3: Neočekivan odgovor servera (RST)
+
+U ovom scenariju klijent šalje TCP SYN segment, ali sa serverske strane prima neočekivan odgovor, kao što je TCP segment sa postavljenim RST flag-om ili segment koji ne odgovara očekivanom SYN+ACK odgovoru. Na osnovu primljenog paketa, modul detektuje da uspostava konekcije nije moguća, prekida proces uspostave i vraća se u početno stanje. Signal `is_connected` ostaje na logičkoj vrijednosti '0'.
+
+dodat sliku sekvenc dijagrama za ovaj slucaj
+
 Navedeni slučajevi predstavljaju osnovu za modeliranje upravljačke logike pomoću FSM dijagrama, kao i za definisanje scenarija, te izradu WaveDrom dijagrama koji grafički prikazuju ponašanje signala kroz vrijeme.
 
 ## Opis dizajna modula
@@ -127,6 +133,11 @@ Ovaj testni scenarij provjerava ispravnost ready/valid mehanizma Avalon-ST inter
 
 Wavedrom dodat
 
+#### Testni scenarij 4: Neočekivani odgovor servera (RST)
+
+Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Modul detektuje nevalidan odgovor i prekida proces uspostave konekcije bez postavljanja signala `is_connected`.
+
+
 ## Modeliranje upravljačke logike
 ### FSM dijagram
 ### Opis FSM stanja
@@ -136,3 +147,5 @@ Wavedrom dodat
 
 ## Literatura
 [1] Kurose, James F., and Keith W. Ross. "Computer networking: A top-down approach edition." Addision Wesley 12 (2007).
+[2] Eddy, W., "Transmission Control Protocol (TCP)", RFC 9293, August 2022.
+
