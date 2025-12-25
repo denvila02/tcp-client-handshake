@@ -39,7 +39,7 @@ Navedeni slučajevi predstavljaju osnovu za modeliranje upravljačke logike pomo
 
 Modul `tcp_client` realizuje klijentsku stranu uspostave TCP konekcije. Upravljačka logika je implementirana kao konačni automat (FSM) koji upravlja redoslijedom slanja i prijema TCP segmenata, dok se komunikacija sa okruženjem ostvaruje putem Avalon-ST interfejsa.
 
-![Slika 3: Blok dijagram modula tcp_client](images/block_diagram.png)
+![Slika 3: Blok dijagram modula tcp_client](images/block_diagram.jpg)
 
 Slika 3: Blok dijagram modula tcp_client
 
