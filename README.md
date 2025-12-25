@@ -9,7 +9,7 @@ TCP protokol pruža pouzdanu, konekcijski orijentisanu komunikaciju između kraj
 ### Three-way handshake
 Uspostava TCP konekcije realizuje se putem three-way handshake mehanizma, koji osigurava da su i klijent i server spremni za pouzdanu komunikaciju. Proces se sastoji od tri koraka: slanja SYN poruke od klijenta ka serveru, zatim odgovora servera sa SYN+ACK porukom, te završne ACK poruke od strane klijenta prikazane pomoću sekvencijalnog dijagrama na Slici 1 [1].
 
-![Slika 1: TCP three-way handshake](images/three_way_handshake.png) 
+![Slika 1: TCP three-way handshake](images/three_way_handshake.jpg) 
 
 Slika 1: TCP three-way handshake
 
