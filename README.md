@@ -53,9 +53,9 @@ Nakon slanja TCP SYN segmenta, klijent ne prima odgovarajući SYN+ACK odgovor sa
 
 U ovom scenariju klijent šalje TCP SYN segment, ali sa serverske strane prima neočekivan odgovor, kao što je TCP segment sa postavljenim RST flag-om ili segment koji ne odgovara očekivanom SYN+ACK odgovoru. Na osnovu primljenog paketa, modul detektuje da uspostava konekcije nije moguća, prekida proces uspostave i vraća se u početno stanje. Signal `is_connected` ostaje na logičkoj vrijednosti '0'.
 
-![Slika 5: Sekvencijalni dijagram (Neočekivan odgovor servera prilikom uspostave TCP konekcije)](images/rst_three_way_handshake.jpg) 
+![Slika 5: Neočekivan odgovor servera prilikom uspostave TCP konekcije](images/rst_three_way_handshake.jpg) 
 
-Slika 5: Sekvencijalni dijagram (Neočekivan odgovor servera prilikom uspostave TCP konekcije)
+Slika 5: Neočekivan odgovor servera prilikom uspostave TCP konekcije 
 
 U skladu sa TCP specifikacijom, RST segment koji predstavlja odgovor na primljeni SYN segment sadrži i ACK flag, pri čemu potvrđujući broj odgovara sekvencijskom broju primljenog SYN-a uvećanom za jedan. [2]
 
@@ -129,15 +129,19 @@ Verifikacija funkcionalnosti modula `tcp_client` vrši se simulacijom karakteris
 
 #### Testni scenarij 1: Uspješna uspostava TCP konekcije
 
-Simulira se standardni three-way handshake proces. Nakon aktivacije signala `connect`, modul generiše TCP SYN segment koji se šalje prema serveru. To će značiti da se formira segment kao na slici 2, sa SYN flag-om postavljenim na 1 te dodatno podešenim ostalim poljima TCP segmenta (kao što su 16-bitni izvorišni i destinacijski port). Taj segment će se slati preko 8-bitnog podatkovnog izlaza (`out_data`). Server odgovara SYN+ACK segmentom (SYN i ACK flag-ovi postavljeni na 1) koji se ispravno prima preko ulaznog Avalon-ST interfejsa (`in_data`, `in_valid`, `in_sop`, `in_eop`). Na osnovu primljenog odgovora, modul šalje završni ACK segment (ACK na 1) i postavlja signal `is_connected` na logičku vrijednost '1', čime se potvrđuje uspješna uspostava TCP konekcije.
+Simulira se standardni three-way handshake proces. Nakon aktivacije signala `connect`, modul generiše TCP SYN segment koji se šalje prema serveru. To će značiti da se formira segment sa SYN flag-om postavljenim na 1 te dodatno podešenim ostalim poljima TCP segmenta (kao što su 16-bitni izvorišni i destinacijski port). Taj segment će se slati preko 8-bitnog podatkovnog izlaza (`out_data`). Server odgovara SYN+ACK segmentom (SYN i ACK flag-ovi postavljeni na 1) koji se ispravno prima preko ulaznog Avalon-ST interfejsa (`in_data`, `in_valid`, `in_sop`, `in_eop`). Na osnovu primljenog odgovora, modul šalje završni ACK segment (ACK na 1) i postavlja signal `is_connected` na logičku vrijednost '1', čime se potvrđuje uspješna uspostava TCP konekcije.
 
-Wavedrom dodat
+![Slika 7: Wavedrom za testni scenarij 1](images/wd_scenarij_2.png)
+
+Slika 7: Wavedrom za testni scenarij 1
 
 #### Testni scenarij 2: Izostanak očekivanog SYN+ACK odgovora
 
 U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Signal `is_connected` ostaje na logičkoj vrijednosti '0', čime se potvrđuje da konekcija nije uspostavljena.
 
-Wavedrom dodat
+![Slika 8: Wavedrom za testni scenarij 2](images/wd_scenarij_2.png)
+
+Slika 8: Wavedrom za testni scenarij 2
 
 #### Testni scenarij 3: Odgoda prenosa usljed ready/valid rukovanja
 
@@ -147,7 +151,11 @@ Wavedrom dodat
 
 #### Testni scenarij 4: Neočekivani odgovor servera (RST)
 
-Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Modul detektuje nevalidan odgovor i prekida proces uspostave konekcije bez postavljanja signala `is_connected`.
+Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Nakon prijema RST(+ACK) segmenta modul detektuje neočekivan odgovor i prekida uspostavu konekcije, prestaje sa slanjem daljih segmenata (`out_valid` ostaje 0) i čeka novi connect za ponovni pokušaj, pri čemu `is_connected` ostaje 0.
+
+![Slika 10: Wavedrom za testni scenarij 4](images/wd_scenarij_4.png)
+
+Slika 10: Wavedrom za testni scenarij 4
 
 
 ## Modeliranje upravljačke logike
