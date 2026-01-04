@@ -20,7 +20,7 @@ Prilikom analize razmjene poruka tokom uspostave TCP konekcije, neophodno je pos
 
 Ethernet zaglavlje sadrži sljedeća polja od interesa: izvorišna i odredišna MAC adresa, kao i polje EtherType koje označava da se u podatkovnom dijelu nalazi IPv4 paket (vrijednost 0x0800).
 
-![Slika 2: Struktura Ethernet II okvira](ethernet_frame.JPG)
+![Slika 2: Struktura Ethernet II okvira](images/ethernet_frame.JPG)
 
 Slika 2: Struktura Ethernet II okvira
 
@@ -147,7 +147,7 @@ Slika 8: Wavedrom za testni scenarij 2
 
 Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Nakon prijema RST(+ACK) segmenta modul detektuje neočekivan odgovor i prekida uspostavu konekcije, prestaje sa slanjem daljih segmenata (`out_valid` ostaje 0) i čeka novi connect za ponovni pokušaj, pri čemu `is_connected` ostaje 0.
 
-![Slika 9: Wavedrom za testni scenarij 3](images/wd_scenarij_4.png)
+![Slika 9: Wavedrom za testni scenarij 3](images/wavedrom_rst.png)
 
 Slika 9: Wavedrom za testni scenarij 3
 
