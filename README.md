@@ -147,9 +147,9 @@ Slika 8: Wavedrom za testni scenarij 2
 
 Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Nakon prijema RST(+ACK) segmenta modul detektuje neočekivan odgovor i prekida uspostavu konekcije, prestaje sa slanjem daljih segmenata (`out_valid` ostaje 0) i čeka novi connect za ponovni pokušaj, pri čemu `is_connected` ostaje 0.
 
-![Slika 9: Wavedrom za testni scenarij 4](images/wd_scenarij_4.png)
+![Slika 9: Wavedrom za testni scenarij 3](images/wd_scenarij_4.png)
 
-Slika 9: Wavedrom za testni scenarij 4
+Slika 9: Wavedrom za testni scenarij 3
 
 
 ## Modeliranje upravljačke logike
