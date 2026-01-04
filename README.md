@@ -137,7 +137,7 @@ Slika 7: Wavedrom za testni scenarij 1
 
 #### Testni scenarij 2: Izostanak očekivanog SYN+ACK odgovora
 
-U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Signal `is_connected` ostaje na logičkoj vrijednosti '0', čime se potvrđuje da konekcija nije uspostavljena.
+U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Ukoliko istekne vrijeme čekanja odgovora, izvršava se retransmisija, odnosno ponovno slanje TCP SYN segmenta. Nakon što istekne retransmisijksi timeout, prekida se zahtjev za uspostavom konekcije i signal `is_connected` ostaje na logičkoj vrijednosti '0'. Time se potvrđuje da konekcija nije uspostavljena.
 
 Slika 8: Wavedrom za testni scenarij 2
 
