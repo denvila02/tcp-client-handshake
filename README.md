@@ -139,8 +139,6 @@ Slika 7: Wavedrom za testni scenarij 1
 
 U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Signal `is_connected` ostaje na logičkoj vrijednosti '0', čime se potvrđuje da konekcija nije uspostavljena.
 
-![Slika 8: Wavedrom za testni scenarij 2](images/wd_scenarij_2.png)
-
 Slika 8: Wavedrom za testni scenarij 2
 
 #### Testni scenarij 3: Neočekivani odgovor servera (RST)
