@@ -1,4 +1,4 @@
-# tcp-client-handshake
+net_# tcp-client-handshake
 VHDL modul koji implementira klijentsku stranu uspostavljanja TCP konekcije.  
 
 ## Uvod
@@ -20,7 +20,7 @@ Prilikom analize razmjene poruka tokom uspostave TCP konekcije, neophodno je pos
 
 Ethernet zaglavlje sadrži sljedeća polja od interesa: izvorišna i odredišna MAC adresa, kao i polje EtherType koje označava da se u podatkovnom dijelu nalazi IPv4 paket (vrijednost 0x0800).
 
-![Slika 2: Struktura Ethernet II okvira](images/ethernet%20_frame.jpg)
+![Slika 2: Struktura Ethernet II okvira](images/ethernet_frame.JPG)
 
 Slika 2: Struktura Ethernet II okvira
 
