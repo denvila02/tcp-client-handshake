@@ -143,19 +143,13 @@ U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+AC
 
 Slika 8: Wavedrom za testni scenarij 2
 
-#### Testni scenarij 3: Odgoda prenosa usljed ready/valid rukovanja
-
-Ovaj testni scenarij provjerava ispravnost ready/valid mehanizma Avalon-ST interfejsa. Tokom slanja TCP segmenta, signal `out_ready` se privremeno postavlja na logičku vrijednost '0', čime se simulira nespremnost prijemnika. Modul zadržava izlazne podatke i ne vrši prenos sve dok `out_ready` ne postane aktivan. Prijenos se nastavlja u taktovima u kojima su signali `out_valid` i `out_ready` istovremeno aktivni, bez gubitka podataka ili narušavanja redoslijeda segmenata.
-
-Wavedrom dodat
-
-#### Testni scenarij 4: Neočekivani odgovor servera (RST)
+#### Testni scenarij 3: Neočekivani odgovor servera (RST)
 
 Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Nakon prijema RST(+ACK) segmenta modul detektuje neočekivan odgovor i prekida uspostavu konekcije, prestaje sa slanjem daljih segmenata (`out_valid` ostaje 0) i čeka novi connect za ponovni pokušaj, pri čemu `is_connected` ostaje 0.
 
-![Slika 10: Wavedrom za testni scenarij 4](images/wd_scenarij_4.png)
+![Slika 9: Wavedrom za testni scenarij 4](images/wd_scenarij_4.png)
 
-Slika 10: Wavedrom za testni scenarij 4
+Slika 9: Wavedrom za testni scenarij 4
 
 
 ## Modeliranje upravljačke logike
