@@ -135,19 +135,26 @@ Simulira se standardni three-way handshake proces. Nakon aktivacije signala `con
 
 Slika 7: Wavedrom za testni scenarij 1
 
-#### Testni scenarij 2: Izostanak očekivanog SYN+ACK odgovora
+#### Testni scenarij 2: Uspješna uspostava TCP konekcije (demonstracija ready-valid mehanizma(backpressure))
+
+Isto kao u prethodnom scenariju simulira se standardni three-way handshake proces. Dodatno u dijelu gdje klijentska strana šalje SYN segment demonstiraran je rad ready-valid mehanizma. Naime u takt intervalu gdje se treba poslati deseti byte SYN segmenta signal `out_valid` postavlja se na '0'. To je znak da klijentska strana nije u mogućnosti da šalje podatke. Nakon otkucana 3 takt intervala `out_valid` se opet postavlja na '1' i imamo normalan prenos signala. To će se nastaviti sve do momenta slanja 17 byte-a SYN segmenta kad pomoću backpressure mehanizma serverska strana daje do znanja da nije u stanju primati nove podatke. Signal `out_ready` se postavlja na '0' i ostaje na toj vrijednosti narednih 8 takt intervala. Za to vrijeme klijentska strana će slati 17 byte SYN segmenta sve dok serverska strana ne bude u stanju pročitati taj byte, odnosno dok `out_ready` ne bude opet na '1'. Ostatak TCP Three-Way-Handshake-a je identičan kao u prethodnom scenariju i prenos je vršen bez dodatne demonstracije rada ready-valid mehanizma (full speed). 
+
+![Slika 8: Wavedrom za testni scenarij 2](images/wavedrom_uspjesna_konekcija_ready_valid_mehanizam_out.png)
+
+Slika 8: Wavedrom za testni scenarij 2
+#### Testni scenarij 3: Izostanak očekivanog SYN+ACK odgovora
 
 U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Signal `is_connected` ostaje na logičkoj vrijednosti '0'. Time se potvrđuje da konekcija nije uspostavljena.
 
-Slika 8: Wavedrom za testni scenarij 2
+Slika 9: Wavedrom za testni scenarij 3
 
-#### Testni scenarij 3: Neočekivani odgovor servera (RST)
+#### Testni scenarij 4: Neočekivani odgovor servera (RST)
 
 Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Nakon prijema RST(+ACK) segmenta modul detektuje neočekivan odgovor i prekida uspostavu konekcije, prestaje sa slanjem daljih segmenata (`out_valid` ostaje 0) i čeka novi connect za ponovni pokušaj, pri čemu `is_connected` ostaje 0.
 
-![Slika 9: Wavedrom za testni scenarij 3](images/wavedrom_rst.png)
+![Slika 10: Wavedrom za testni scenarij 4](images/wavedrom_rst.png)
 
-Slika 9: Wavedrom za testni scenarij 3
+Slika 10: Wavedrom za testni scenarij 4
 
 
 ## Modeliranje upravljačke logike
