@@ -159,6 +159,9 @@ Slika 10: Wavedrom za testni scenarij 4
 
 ## Modeliranje upravljačke logike
 ### FSM dijagram
+![Slika 11: FSM dijagram stanja TCP klijentske strane](images/wavedrom_rst.png)
+
+Slika 11: FSM dijagram stanja TCP klijentske strane
 ### Opis FSM stanja
 ## Implementacija
 
