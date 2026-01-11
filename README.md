@@ -165,18 +165,19 @@ Konačni automat ili FSM (eng. Finite State Machine) predstavlja diskretni matem
 - Mealy-jevi - FSM-ovi kod kojih izlaz, pored trenutnog stanja, zavisi i od eksternog
 ulaza
 
-Klasičan primjer Moore-ovih automata su brojači, dok se većina sistema svrstava u Mealyjeve automate. Postoje dva načina predstavljanja FSM-ova:
+Klasičan primjer Moore-ovih automata su brojači, dok se većina sistema svrstava u Mealyjeve automate. Upravo FSM TCP klijenta je realiziran kao Mealy-jev automat. Postoje dva načina predstavljanja FSM-ova:
 
-• dijagram stanja
+- dijagram stanja
 
-• hardverski bazirana reprezentacija
+- hardverski bazirana reprezentacija
 
-Dijagram stanja predstavlja grafiˇčku reprezentaciju specifikacija FSM-a. Dijagram stanja
+Dijagram stanja predstavlja grafičku reprezentaciju specifikacija FSM-a. Dijagram stanja
 prikazuje sva moguća stanja u kojima se sistem može naći, vrijednosti ulaza za koje sistem
 prelazi iz stanja u stanje, te vrijednosti izlaza koje sistem proizvodi u svakom od stanja.
 
 
 ### FSM dijagram
+Na slici 11 prikazan je FSM dijagram stanja TCP klijentske strane realiziran kao Mealy-jev automat: 
 ![Slika 11: FSM dijagram stanja TCP klijentske strane](images/fsm.png)
 
 Slika 11: FSM dijagram stanja TCP klijentske strane
