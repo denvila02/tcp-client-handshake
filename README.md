@@ -183,6 +183,31 @@ Na slici 11 prikazan je FSM dijagram stanja TCP klijentske strane realiziran kao
 Slika 11: FSM dijagram stanja TCP klijentske strane
 Bojama je pokušano olakšati razumjevanje ovakve vizuelne interpretacije FSM-a. Naime bijeli krugovi su očekivana stanja ispravne TCP konekcije, plavim je označeno idle stanje. Rozim su označenja stanja tzv. slow read-a koja označavaju da klijentska ili serverska strana nisu u stanju čitati podatke (`out_ready`/`in_ready signali`) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. Zelenim su označena stanja tzv. slow write-a koja označavaju da klijentska ili serverska strana nisu u stanju slati podatke (`out_valid`/`in_valid` signali) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. 
 ### Opis FSM stanja
+FSM započinje u stanju **IDLE**, u kojem se sistem nalazi nakon resetovanja ili nakon prekida postojeće konekcije/neuspjelog procesa konekcije. U ovom stanju ne postoji aktivna komunikacija i svi izlazni signali su u neaktivnom stanju. FSM čeka zahtjev za uspostavu konekcije, a pri `connect='1' prelazi u stanje pripreme slanja inicijalnog paketa (SYN segment).
+
+U stanju **PREPARE SYN** vrši se priprema TCP SYN paketa koji predstavlja prvi korak u procesu uspostave veze. U ovom stanju se inicijalizuju zaglavlja Ethernet, IP i TCP sloja, postavlja se početak okvira i pripremaju prvi bajtovi za slanje. Puni se interni Tx buffer koji će se pri slanju postepeno prazniti byte po byte. FSM u ovom stanju ne šalje podatke dok izlazni interfejs ne signalizira spremnost za prihvat podataka, čime se osigurava pravilno poštivanje ready/valid protokola.
+
+Nakon što je izlazni interfejs spreman, FSM prelazi u stanje **TX SYN**, u kojem se kompletan SYN okvir šalje bajt po bajt. Tokom ovog stanja aktivan je signal validnosti podataka, a brojač byte-ova prati napredak slanja okvira sve do njegovog završetka. Po slanju posljednjeg bajta i označavanju kraja okvira, FSM završava proces inicijalnog slanja i prelazi u stanje čekanja odgovora.
+
+Stanje **WAIT RX** predstavlja fazu u kojoj FSM očekuje dolazni paket sa udaljene strane. U ovom stanju sistem ne šalje nove podatke, već nadgleda ulazni interfejs i čeka početak novog okvira. Ukoliko u predviđenom vremenu ne stigne odgovor, FSM aktivira mehanizam isteka vremena (unutrašnji signal `timeout` se postavlja na vrijednost '1') i vraća se u početno stanje, čime se izbjegava blokiranje sistema.
+
+Kada se detektuje dolazni okvir, FSM prelazi u stanje **RX FRAME**, gdje se vrši prijem kompletnog okvira. U ovom stanju se bajtovi prihvataju sekvencijalno, uz stalno signaliziranje spremnosti za prijem, dok se ne detektuje kraj okvira. FSM u ovom koraku ne donosi odluke o značenju primljenih podataka, već se fokusira isključivo na pouzdan i potpun prijem okvira.
+
+Nakon završetka prijema, FSM ulazi u stanje **EVALUATE RX**, u kojem se vrši analiza sadržaja primljenog paketa. U ovom stanju se provjeravaju adrese, portovi i kontrolni TCP flagovi, te se donosi odluka o daljem toku komunikacije. U zavisnosti od rezultata analize, FSM može detektovati validan odgovor za nastavak uspostave veze, neočekivani paket ili grešku, te na osnovu toga odabrati naredno stanje.
+
+U slučaju da je primljen paket validan i zahtijeva slanje potvrde, FSM prelazi u stanje **PREPARE ACK**, gdje se priprema TCP ACK paket. Kao i kod pripreme SYN paketa, u ovom stanju se inicijalizuju zaglavlja i postavlja početak okvira, dok se samo slanje odgađa dok izlazni interfejs ne postane spreman.
+
+Stanje **TX ACK** predstavlja fazu slanja ACK paketa kojim se završava proces uspostave TCP konekcije. FSM u ovom stanju šalje kompletan okvir uz aktivan valid signal i praćenje broja bajtova, a nakon slanja posljednjeg bajta konekcija se smatra uspješno uspostavljenom.
+
+Po završetku three-way-handshake procesa, FSM ulazi u stanje **CONNECTED**, u kojem se nalazi tokom normalnog rada sistema. U ovom stanju omogućena je dvosmjerna razmjena podataka između klijenta i servera, uz stalno poštivanje ready/valid handshaking mehanizma. FSM ostaje u ovom stanju sve dok ne dođe do zahtjeva za prekid veze ili greške koja zahtijeva resetovanje konekcije.
+
+Pored osnovnih komunikacijskih stanja, FSM sadrži i dodatna stanja koja modeliraju situacije smanjenog protoka podataka. Stanje **CLIENT SLOW WRITE** aktivira se kada klijent nije u mogućnosti da u datom trenutku isporuči nove podatke za slanje, zbog čega FSM privremeno zaustavlja prenos dok se ponovo ne uspostavi validnost izlaznih podataka. Ovo stanje omogućava pravilno rukovanje situacijama u kojima klijent radi sporije od komunikacijskog interfejsa.
+
+Stanje **CLIENT SLOW READ** koristi se u situacijama kada klijent ne može dovoljno brzo prihvatiti dolazne podatke. U tom slučaju FSM deaktivira signal spremnosti za prijem (`in_ready`), čime se udaljenoj strani signalizira da privremeno obustavi slanje podataka. Na ovaj način se sprječava gubitak podataka i preopterećenje prijemnog bafera.
+
+Analogno tome, stanje **SERVER SLOW WRITE** opisuje situaciju u kojoj server nije u mogućnosti da kontinuirano šalje podatke prema klijentu. KLijent u ovom stanju ne prima nove podatke jer server ne šalje ništa preko streaming interfejsa.
+
+Na kraju, stanje **SERVER SLOW READ** modelira slučaj u kojem server ne može prihvatiti dolazne podatke željenom brzinom. FSM u tom slučaju kontinuirano šalje isti byte preko `out_data` sve dok server ne bude u stanju da ga prihvati, sve kako ne bi došlo do gubitka podataka.
 ## Implementacija
 
 ## Zaključak
