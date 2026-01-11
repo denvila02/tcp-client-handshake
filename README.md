@@ -160,12 +160,16 @@ Slika 10: Wavedrom za testni scenarij 4
 ## Modeliranje upravljačke logike
 Konačni automat ili FSM (eng. Finite State Machine) predstavlja diskretni matematički model koji se koristi za modeliranje sekvencijalnih logičkih kola. Ovakav vid predstavljanja je od velike koristi u onim sistemima u kojima postoji tačno i precizno definisana lista stanja u kojima se sistem može naći, uslova koji dovode do prelaska iz jednog stanja u drugo, te vrijednosti izlaza koje sistem daje kao rezultat u svakom od tih stanja. Postoje dva tipa FSM-ova:
 • Moore-ovi - FSM-ovi kod kojih izlaz zavisi isključivo od trenutnog stanja
+
 • Mealy-jevi - FSM-ovi kod kojih izlaz, pored trenutnog stanja, zavisi i od eksternog
 ulaza
-Klasičan primjer Moore-ovih automata su brojači, dok se većina sistema svrstava u Mealyjeve automate.
-Postoje dva načina predstavljanja FSM-ova:
+
+Klasičan primjer Moore-ovih automata su brojači, dok se većina sistema svrstava u Mealyjeve automate. Postoje dva načina predstavljanja FSM-ova:
+
 • dijagram stanja
+
 • hardverski bazirana reprezentacija
+
 Dijagram stanja predstavlja grafiˇčku reprezentaciju specifikacija FSM-a. Dijagram stanja
 prikazuje sva moguća stanja u kojima se sistem može naći, vrijednosti ulaza za koje sistem
 prelazi iz stanja u stanje, te vrijednosti izlaza koje sistem proizvodi u svakom od stanja.
