@@ -201,13 +201,6 @@ Stanje **TX ACK** predstavlja fazu slanja ACK paketa kojim se završava proces u
 
 Po završetku three-way-handshake procesa, FSM ulazi u stanje **CONNECTED**, u kojem se nalazi tokom normalnog rada sistema. U ovom stanju omogućena je dvosmjerna razmjena podataka između klijenta i servera, uz stalno poštivanje ready/valid handshaking mehanizma. FSM ostaje u ovom stanju sve dok ne dođe do zahtjeva za prekid veze ili greške koja zahtijeva resetovanje konekcije.
 
-Pored osnovnih komunikacijskih stanja, FSM sadrži i dodatna stanja koja modeliraju situacije smanjenog protoka podataka. Stanje **CLIENT SLOW WRITE** aktivira se kada klijent nije u mogućnosti da u datom trenutku isporuči nove podatke za slanje, zbog čega FSM privremeno zaustavlja prenos dok se ponovo ne uspostavi validnost izlaznih podataka. Ovo stanje omogućava pravilno rukovanje situacijama u kojima klijent radi sporije od komunikacijskog interfejsa.
-
-Stanje **CLIENT SLOW READ** koristi se u situacijama kada klijent ne može dovoljno brzo prihvatiti dolazne podatke. U tom slučaju FSM deaktivira signal spremnosti za prijem (`in_ready`), čime se udaljenoj strani signalizira da privremeno obustavi slanje podataka. Na ovaj način se sprječava gubitak podataka i preopterećenje prijemnog bafera.
-
-Analogno tome, stanje **SERVER SLOW WRITE** opisuje situaciju u kojoj server nije u mogućnosti da kontinuirano šalje podatke prema klijentu. KLijent u ovom stanju ne prima nove podatke jer server ne šalje ništa preko streaming interfejsa.
-
-Na kraju, stanje **SERVER SLOW READ** modelira slučaj u kojem server ne može prihvatiti dolazne podatke željenom brzinom. FSM u tom slučaju kontinuirano šalje isti byte preko `out_data` sve dok server ne bude u stanju da ga prihvati, sve kako ne bi došlo do gubitka podataka.
 ## Implementacija
 
 ## Zaključak
