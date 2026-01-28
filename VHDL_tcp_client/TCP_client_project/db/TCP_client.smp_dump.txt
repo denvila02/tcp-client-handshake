@@ -1,0 +1,12 @@
+
+State Machine - |tcp_client|st
+Name st.CONNECTED st.TX_ACK st.PREPARE_ACK st.EVALUATE_RX st.RX_FRAME st.WAIT_RX st.TX_SYN st.PREPARE_SYN st.IDLE 
+st.IDLE 0 0 0 0 0 0 0 0 0 
+st.PREPARE_SYN 0 0 0 0 0 0 0 1 1 
+st.TX_SYN 0 0 0 0 0 0 1 0 1 
+st.WAIT_RX 0 0 0 0 0 1 0 0 1 
+st.RX_FRAME 0 0 0 0 1 0 0 0 1 
+st.EVALUATE_RX 0 0 0 1 0 0 0 0 1 
+st.PREPARE_ACK 0 0 1 0 0 0 0 0 1 
+st.TX_ACK 0 1 0 0 0 0 0 0 1 
+st.CONNECTED 1 0 0 0 0 0 0 0 1 

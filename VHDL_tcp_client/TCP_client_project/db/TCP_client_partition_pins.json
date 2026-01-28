@@ -1,0 +1,889 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "is_connected",
+					"strict" : false
+				},
+				{
+					"name" : "in_ready",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[0]",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[1]",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[2]",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[3]",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[4]",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[5]",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[6]",
+					"strict" : false
+				},
+				{
+					"name" : "out_data[7]",
+					"strict" : false
+				},
+				{
+					"name" : "out_valid",
+					"strict" : false
+				},
+				{
+					"name" : "out_sop",
+					"strict" : false
+				},
+				{
+					"name" : "out_eop",
+					"strict" : false
+				},
+				{
+					"name" : "out_ready",
+					"strict" : false
+				},
+				{
+					"name" : "clock",
+					"strict" : false
+				},
+				{
+					"name" : "reset",
+					"strict" : false
+				},
+				{
+					"name" : "in_valid",
+					"strict" : false
+				},
+				{
+					"name" : "in_sop",
+					"strict" : false
+				},
+				{
+					"name" : "in_eop",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[8]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[0]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[16]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[8]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[16]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[24]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[0]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[24]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[24]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[0]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[8]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[16]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[8]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[0]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[8]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[0]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[40]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[0]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[8]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[32]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[24]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[32]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[40]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[16]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[9]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[1]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[17]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[9]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[17]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[25]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[1]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[25]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[25]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[1]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[9]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[17]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[9]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[1]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[9]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[1]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[41]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[1]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[9]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[33]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[25]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[33]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[41]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[17]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[42]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[2]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[10]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[34]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[34]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[26]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[42]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[18]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[10]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[2]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[10]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[18]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[26]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[2]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[18]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[26]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[26]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[2]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[10]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[18]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[10]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[2]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[10]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[2]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[43]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[3]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[11]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[35]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[35]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[27]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[43]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[19]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[11]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[3]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[11]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[19]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[27]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[3]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[19]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[27]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[27]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[3]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[11]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[19]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[11]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[3]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[11]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[3]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[4]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[44]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[12]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[36]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[28]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[36]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[44]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[20]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[12]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[4]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[20]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[28]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[20]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[12]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[28]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[4]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[28]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[4]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[12]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[20]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[12]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[4]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[12]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[4]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[13]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[5]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[21]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[13]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[21]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[29]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[5]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[29]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[29]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[5]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[13]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[21]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[13]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[5]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[13]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[5]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[5]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[45]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[13]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[37]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[29]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[37]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[45]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[21]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[46]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[6]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[14]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[38]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[38]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[30]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[46]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[22]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[14]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[6]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[14]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[22]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[30]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[6]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[22]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[30]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[30]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[6]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[14]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[22]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[14]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[6]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[14]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[6]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[15]",
+					"strict" : false
+				},
+				{
+					"name" : "client_port[7]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[31]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[23]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[15]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[23]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[31]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[7]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[31]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[7]",
+					"strict" : false
+				},
+				{
+					"name" : "client_ip[15]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[23]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[15]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[7]",
+					"strict" : false
+				},
+				{
+					"name" : "server_ip[15]",
+					"strict" : false
+				},
+				{
+					"name" : "server_port[7]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[7]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[47]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[15]",
+					"strict" : false
+				},
+				{
+					"name" : "client_mac[39]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[31]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[39]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[47]",
+					"strict" : false
+				},
+				{
+					"name" : "server_mac[23]",
+					"strict" : false
+				},
+				{
+					"name" : "connect",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[4]",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[7]",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[6]",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[5]",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[1]",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[3]",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[2]",
+					"strict" : false
+				},
+				{
+					"name" : "in_data[0]",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
