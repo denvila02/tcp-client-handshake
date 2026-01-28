@@ -212,7 +212,7 @@ Validnost primljenog paketa provjerava se analizom destinacijske MAC adrese, Eth
 TCP klijent implementira osnovni three-way handshake mehanizam, pri čemu generiše TCP segmente sa odgovarajućim zastavicama (SYN, SYN-ACK, ACK). Izlazni paketi se formiraju zamjenom izvorišnih i odredišnih MAC i IP adresa, kao i TCP portova, te se šalju sekvencijalno, bajt-po-bajt, uz poštivanje out_ready signala i pravilno označavanje početka i kraja okvira. 
 
 Na sljedećoj slici imamo prikaz compilation reporta iz Quartus Prime-a.
-![Slika 12: Quartus Prime compilation report -uspješna kompilacija modula](VHDL_tcp_client/rezultati/compilation report.jpg)
+![Slika 12: Quartus Prime compilation report -uspješna kompilacija modula](VHDL_tcp_client/rezultati/compilation_report.jpg)
 ## Zaključak
 
 ## Literatura
