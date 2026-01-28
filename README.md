@@ -226,10 +226,8 @@ Verifikacija funkcionalnosti implementiranog VHDL modula izvršena je korištenj
 ![Slika 17: ModelSim compilation report - uspješna kompilacija testbencha 4](VHDL_tcp_client/rezultati/comp_rep_timeout.JPG)
 ### Testni scenarij 1: Uspješna uspostava TCP konekcije
 U prvom scenariju verificiran je rad TCP_client modula kada proces uspostave konekcije teče ispravno bez ikakvih zastajkivanja (ready/valid mehanizam) ili pogrešno poslanih polja. Klijent šalje SYN segment, zatim prima SYN+ACK te konačno šalje ACK segment. FSM prelazi iz stanja u stanje potpuno očekivano i na kraju zaustavlja se u **CONNECTED** stanju i klijent je spreman za dalju razmjenu podataka. Na sljedećoj slici je prikazan kompletan testbench wave dijagram, te zatim slijede slike koje radi preglednosti prikazuju manje vremenske intervale istog vremenskog dijagrama.
-![Slika 18: ](VHDL_tcp_client/rezultati/comp_rep_full_speed.JPG)
-![Slika 19: Quartus Prime state machine viewer - FSM dijagram stanja](VHDL_tcp_client/rezultati/comp_rep_ready_valid.JPG)
-![Slika 20: Quartus Prime state machine viewer - FSM dijagram stanja](VHDL_tcp_client/rezultati/fsm_dijagram.JPG)
-![Slika 21: Quartus Prime state machine viewer - FSM dijagram stanja](VHDL_tcp_client/rezultati/fsm_dijagram.JPG)
+![Slika 18: ](VHDL_tcp_client/rezultati/tb_full_speed_final.png)
+Vidimo poklapanje dobijenih vremenskih oblika signala sa onim prikazanim na wavedromu na slici 7, čime se potvrđuje ispravnost našeg dizajna.
 ### Testni scenarij 2: Uspješna uspostava TCP konekcije (demonstracija ready-valid mehanizma(backpressure))
 ### Testni scenarij 3: Izostanak očekivanog SYN+ACK odgovora
 ### Testni scenarij 4: Neočekivani odgovor servera (RST)
