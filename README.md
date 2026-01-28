@@ -179,7 +179,7 @@ prelazi iz stanja u stanje, te vrijednosti izlaza koje sistem proizvodi u svakom
 
 ### FSM dijagram
 Na slici 11 prikazan je FSM dijagram stanja TCP klijentske strane realiziran kao Mealy-jev automat: 
-![Slika 11: FSM dijagram stanja TCP klijentske strane](fsm_tcp_client.png)
+![Slika 11: FSM dijagram stanja TCP klijentske strane](fsm_tcp_client/fsm_tcp_client.png)
 
 Slika 11: FSM dijagram stanja TCP klijentske strane
 Bojama je pokušano olakšati razumjevanje ovakve vizuelne interpretacije FSM-a. Naime bijeli krugovi su očekivana stanja ispravne TCP konekcije, plavim je označeno idle stanje. Rozim su označenja stanja tzv. slow read-a koja označavaju da klijentska ili serverska strana nisu u stanju čitati podatke (`out_ready`/`in_ready signali`) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. Zelenim su označena stanja tzv. slow write-a koja označavaju da klijentska ili serverska strana nisu u stanju slati podatke (`out_valid`/`in_valid` signali) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. 
