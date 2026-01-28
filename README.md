@@ -212,18 +212,22 @@ Validnost primljenog paketa provjerava se analizom destinacijske MAC adrese, Eth
 TCP klijent implementira osnovni three-way handshake mehanizam, pri čemu generiše TCP segmente sa odgovarajućim zastavicama (SYN, SYN-ACK, ACK). Izlazni paketi se formiraju zamjenom izvorišnih i odredišnih MAC i IP adresa, kao i TCP portova, te se šalju sekvencijalno, bajt-po-bajt, uz poštivanje out_ready signala i pravilno označavanje početka i kraja okvira. 
 
 Na sljedećoj slici imamo prikaz compilation reporta iz Quartus Prime-a.
-![Slika 12: Quartus Prime compilation report -uspješna kompilacija modula](VHDL_tcp_client/rezultati/compilation_report.JPG)
+![Slika 12: Quartus Prime compilation report - uspješna kompilacija modula](VHDL_tcp_client/rezultati/compilation_report.JPG)
+Slika 12: Quartus Prime compilation report - uspješna kompilacija modula
 Verifikaciju FSM dijagrama stanja možemo izvršiti pomoću Quartus alata - State Machine Viewer. Na sljedećoj slici imamo dobijeni FSM dijagram stanja za kompajlirani VHDL kod. 
 ![Slika 13: Quartus Prime state machine viewer - FSM dijagram stanja](VHDL_tcp_client/rezultati/fsm_dijagram.JPG)
+Slika 12: Quartus Prime state machine viewer - FSM dijagram stanja
 Vidimo da se dobijeni generisani FSM dijagram stanja poklapa sa našim dijagramom sa slike 11. 
 
 ## Verifikacija pomoću simulacijskog alata ModelSim
 U nastavku će biti obrađena verifikacija ispravnosti rada implementiranog modula pomoću simulacije, poredeći dobijene rezultate sa prethodno prikazanim scenarijima implementiranim u Wavedrom-u (slike 7, 8, 9 i 10).
 Verifikacija funkcionalnosti implementiranog VHDL modula izvršena je korištenjem testbencha razvijenog u jeziku VHDL, a simulacije su provedene u alatu ModelSim. Cilj simulacije je potvrda ispravnog funkcionisanja FSM logike, pravilne obrade zaglavlja protokola, korektnih prelaza između TCP stanja, kao i ispravnog formiranja izlaznih paketa. Rezultati simulacije analizirani su posmatranjem internih signala i izlaznog toka podataka u vremenskom dijagramu ModelSima. Na sljedećim slikama su prikazani compilation reporti pisanih testbencha.
 ![Slika 14: ModelSim compilation report - uspješna kompilacija testbencha](VHDL_tcp_client/rezultati/tb_comp_rep_final.png)
+Slika 14: ModelSim compilation report - uspješna kompilacija testbencha
 ### Testni scenarij 1: Uspješna uspostava TCP konekcije
 U prvom scenariju verificiran je rad TCP_client modula kada proces uspostave konekcije teče ispravno bez ikakvih zastajkivanja (ready/valid mehanizam) ili pogrešno poslanih polja. Klijent šalje SYN segment, zatim prima SYN+ACK te konačno šalje ACK segment. FSM prelazi iz stanja u stanje potpuno očekivano i na kraju zaustavlja se u **CONNECTED** stanju i klijent je spreman za dalju razmjenu podataka. Na sljedećoj slici je prikazan kompletan testbench wave dijagram, te zatim slijede slike koje radi preglednosti prikazuju manje vremenske intervale istog vremenskog dijagrama.
-![Slika 18: ](VHDL_tcp_client/rezultati/tb_full_speed_final.png)
+![Slika 15: Verifikacija rezultata pomoću ModelSim-a - Scenario 1](VHDL_tcp_client/rezultati/tb_full_speed_final.png)
+Slika 15: Verifikacija rezultata pomoću ModelSim-a - Scenario 1
 Vidimo poklapanje dobijenih vremenskih oblika signala sa onim prikazanim na wavedromu na slici 7, čime se potvrđuje ispravnost našeg dizajna.
 ### Testni scenarij 2: Uspješna uspostava TCP konekcije (demonstracija ready-valid mehanizma(backpressure))
 ### Testni scenarij 3: Izostanak očekivanog SYN+ACK odgovora
