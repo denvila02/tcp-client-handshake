@@ -1,0 +1,158 @@
+# Reading E:/kvartus/modelsim_ase/tcl/vsim/pref.tcl
+# ERROR: No extended dataflow license exists
+# do TCP_client_run_msim_rtl_vhdl.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Model Technology ModelSim - Intel FPGA Edition vmap 10.5b Lib Mapping Utility 2016.10 Oct  5 2016
+# vmap work rtl_work 
+# Copying E:/kvartus/modelsim_ase/win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vcom -93 -work work {E:/kvartus/TCP_client_project/TCP_client.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:45:38 on Jan 28,2026
+# vcom -reportprogress 300 -93 -work work E:/kvartus/TCP_client_project/TCP_client.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity tcp_client
+# -- Compiling architecture rtl of tcp_client
+# ** Warning: E:/kvartus/TCP_client_project/TCP_client.vhd(71): (vcom-1200) Function "hi8" return type index bounds do not match RETURN value index bounds.
+# ** Warning: E:/kvartus/TCP_client_project/TCP_client.vhd(79): (vcom-1200) Function "b31_24" return type index bounds do not match RETURN value index bounds.
+# ** Warning: E:/kvartus/TCP_client_project/TCP_client.vhd(80): (vcom-1200) Function "b23_16" return type index bounds do not match RETURN value index bounds.
+# ** Warning: E:/kvartus/TCP_client_project/TCP_client.vhd(81): (vcom-1200) Function "b15_8" return type index bounds do not match RETURN value index bounds.
+# End time: 15:45:38 on Jan 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 4
+# 
+vcom -reportprogress 300 -work work E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_timeout_no_response
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:46:21 on Jan 28,2026
+# vcom -reportprogress 300 -work work E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_timeout_no_response 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity tb_tcp_client_timeout
+# -- Compiling architecture behavior of tb_tcp_client_timeout
+# End time: 15:46:21 on Jan 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+vsim work.tb_tcp_client_timeout
+# vsim work.tb_tcp_client_timeout 
+# Start time: 15:46:26 on Jan 28,2026
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_tcp_client_timeout(behavior)
+# Loading work.tcp_client(rtl)
+add wave -position insertpoint  \
+sim:/tb_tcp_client_timeout/uut/clock \
+sim:/tb_tcp_client_timeout/uut/reset \
+sim:/tb_tcp_client_timeout/uut/connect \
+sim:/tb_tcp_client_timeout/uut/is_connected \
+sim:/tb_tcp_client_timeout/uut/in_data \
+sim:/tb_tcp_client_timeout/uut/in_valid \
+sim:/tb_tcp_client_timeout/uut/in_sop \
+sim:/tb_tcp_client_timeout/uut/in_eop \
+sim:/tb_tcp_client_timeout/uut/in_ready \
+sim:/tb_tcp_client_timeout/uut/out_data \
+sim:/tb_tcp_client_timeout/uut/out_valid \
+sim:/tb_tcp_client_timeout/uut/out_sop \
+sim:/tb_tcp_client_timeout/uut/out_eop \
+sim:/tb_tcp_client_timeout/uut/out_ready \
+sim:/tb_tcp_client_timeout/uut/timeout_cnt \
+sim:/tb_tcp_client_timeout/uut/timeout_hit \
+sim:/tb_tcp_client_timeout/uut/st \
+sim:/tb_tcp_client_timeout/uut/st_n
+run
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 0  Instance: /tb_tcp_client_timeout/uut
+vcom -reportprogress 300 -work work E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:04:08 on Jan 28,2026
+# vcom -reportprogress 300 -work work E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity tb_tcp_client_full_speed
+# -- Compiling architecture behavior of tb_tcp_client_full_speed
+# ** Warning: E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed(82): (vcom-1200) Function "hi8" return type index bounds do not match RETURN value index bounds.
+# ** Warning: E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed(92): (vcom-1200) Function "b31_24" return type index bounds do not match RETURN value index bounds.
+# ** Warning: E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed(97): (vcom-1200) Function "b23_16" return type index bounds do not match RETURN value index bounds.
+# ** Warning: E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed(102): (vcom-1200) Function "b15_8" return type index bounds do not match RETURN value index bounds.
+# End time: 16:04:08 on Jan 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 4
+vsim work.tb_tcp_client_full_speed
+# End time: 16:04:29 on Jan 28,2026, Elapsed time: 0:18:03
+# Errors: 0, Warnings: 5
+# vsim work.tb_tcp_client_full_speed 
+# Start time: 16:04:29 on Jan 28,2026
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_tcp_client_full_speed(behavior)
+# Loading work.tcp_client(rtl)
+# WARNING: No extended dataflow license exists
+add wave -position insertpoint sim:/tb_tcp_client_full_speed/uut/*
+add wave -position insertpoint  \
+sim:/tb_tcp_client_full_speed/uut/clock \
+sim:/tb_tcp_client_full_speed/uut/reset \
+sim:/tb_tcp_client_full_speed/uut/connect \
+sim:/tb_tcp_client_full_speed/uut/is_connected \
+sim:/tb_tcp_client_full_speed/uut/in_data \
+sim:/tb_tcp_client_full_speed/uut/in_valid \
+sim:/tb_tcp_client_full_speed/uut/in_sop \
+sim:/tb_tcp_client_full_speed/uut/in_eop \
+sim:/tb_tcp_client_full_speed/uut/in_ready \
+sim:/tb_tcp_client_full_speed/uut/out_data \
+sim:/tb_tcp_client_full_speed/uut/out_valid \
+sim:/tb_tcp_client_full_speed/uut/out_sop \
+sim:/tb_tcp_client_full_speed/uut/out_eop \
+sim:/tb_tcp_client_full_speed/uut/out_ready \
+sim:/tb_tcp_client_full_speed/uut/timeout_cnt \
+sim:/tb_tcp_client_full_speed/uut/timeout_hit \
+sim:/tb_tcp_client_full_speed/uut/st \
+sim:/tb_tcp_client_full_speed/uut/st_n
+vsim work.tb_tcp_client_full_speed
+# End time: 16:05:10 on Jan 28,2026, Elapsed time: 0:00:41
+# Errors: 0, Warnings: 1
+# vsim work.tb_tcp_client_full_speed 
+# Start time: 16:05:10 on Jan 28,2026
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_tcp_client_full_speed(behavior)
+# Loading work.tcp_client(rtl)
+# WARNING: No extended dataflow license exists
+add wave -position insertpoint  \
+sim:/tb_tcp_client_full_speed/uut/clock \
+sim:/tb_tcp_client_full_speed/uut/reset \
+sim:/tb_tcp_client_full_speed/uut/connect \
+sim:/tb_tcp_client_full_speed/uut/is_connected \
+sim:/tb_tcp_client_full_speed/uut/in_data \
+sim:/tb_tcp_client_full_speed/uut/in_valid \
+sim:/tb_tcp_client_full_speed/uut/in_sop \
+sim:/tb_tcp_client_full_speed/uut/in_eop \
+sim:/tb_tcp_client_full_speed/uut/in_ready \
+sim:/tb_tcp_client_full_speed/uut/out_data \
+sim:/tb_tcp_client_full_speed/uut/out_valid \
+sim:/tb_tcp_client_full_speed/uut/out_sop \
+sim:/tb_tcp_client_full_speed/uut/out_eop \
+sim:/tb_tcp_client_full_speed/uut/out_ready \
+sim:/tb_tcp_client_full_speed/uut/timeout_cnt \
+sim:/tb_tcp_client_full_speed/uut/timeout_hit \
+sim:/tb_tcp_client_full_speed/uut/st \
+sim:/tb_tcp_client_full_speed/uut/st_n
+run
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ps  Iteration: 0  Instance: /tb_tcp_client_full_speed/uut
+step -over
+# End time: 16:17:05 on Jan 28,2026, Elapsed time: 0:11:55
+# Errors: 0, Warnings: 2

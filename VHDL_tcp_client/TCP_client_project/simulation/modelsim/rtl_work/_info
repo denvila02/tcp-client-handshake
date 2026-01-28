@@ -1,0 +1,133 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dE:/kvartus/TCP_client_project/simulation/modelsim
+Etb_tcp_client_full_speed
+Z1 w1769074970
+Z2 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z5 8E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed
+Z6 FE:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed
+l0
+L6
+Vj3WW0ZZUC68U0i4OdMMf21
+!s100 AMHQm=jd:^`P;9[``dBbQ2
+Z7 OV;C;10.5b;63
+32
+Z8 !s110 1769612648
+!i10b 1
+Z9 !s108 1769612648.000000
+Z10 !s90 -reportprogress|300|-work|work|E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed|
+Z11 !s107 E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_full_speed|
+!i113 1
+Z12 o-work work
+Z13 tExplicit 1 CvgOpt 0
+Abehavior
+R2
+R3
+R4
+DEx4 work 24 tb_tcp_client_full_speed 0 22 j3WW0ZZUC68U0i4OdMMf21
+l231
+L10
+V6^8Bb=j13Lc1Hl8Fb?AP70
+!s100 2c:6XdaRM[MhVSe95dk_?3
+R7
+32
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+Etb_tcp_client_timeout
+Z14 w1769079147
+R2
+R3
+R4
+R0
+Z15 8E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_timeout_no_response
+Z16 FE:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_timeout_no_response
+l0
+L6
+VJ0GCZ`bn[HXEiI0K@EGmF1
+!s100 N?M]@aH5<FV]VL4QZC?B>1
+R7
+32
+Z17 !s110 1769611581
+!i10b 1
+Z18 !s108 1769611581.000000
+Z19 !s90 -reportprogress|300|-work|work|E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_timeout_no_response|
+Z20 !s107 E:/kvartus/TCP_client_project/simulation/modelsim/tb_tcp_client_timeout_no_response|
+!i113 1
+R12
+R13
+Abehavior
+R2
+R3
+R4
+DEx4 work 21 tb_tcp_client_timeout 0 22 J0GCZ`bn[HXEiI0K@EGmF1
+l107
+L10
+VBcXZRa`^UoAgf]VB4KM7=0
+!s100 [OKM8UiVXkJ@K@;iFVb5b1
+R7
+32
+R17
+!i10b 1
+R18
+R19
+R20
+!i113 1
+R12
+R13
+Etcp_client
+Z21 w1769611469
+R2
+R3
+R4
+R0
+Z22 8E:/kvartus/TCP_client_project/TCP_client.vhd
+Z23 FE:/kvartus/TCP_client_project/TCP_client.vhd
+l0
+L5
+Vlde1RkbP=A>BzVk79VFon1
+!s100 bRE[Cf[g6Mc_C8oTGDGZ^2
+R7
+31
+Z24 !s110 1769611538
+!i10b 1
+Z25 !s108 1769611538.000000
+Z26 !s90 -reportprogress|300|-93|-work|work|E:/kvartus/TCP_client_project/TCP_client.vhd|
+Z27 !s107 E:/kvartus/TCP_client_project/TCP_client.vhd|
+!i113 1
+Z28 o-93 -work work
+R13
+Artl
+R2
+R3
+R4
+DEx4 work 10 tcp_client 0 22 lde1RkbP=A>BzVk79VFon1
+l134
+L36
+VSYZca9_OREioPEK0WnQKW3
+!s100 oIJ_AU[DYG?PK3KI=[fQ>1
+R7
+31
+R24
+!i10b 1
+R25
+R26
+R27
+!i113 1
+R28
+R13

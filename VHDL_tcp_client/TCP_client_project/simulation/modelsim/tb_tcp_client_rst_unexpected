@@ -1,0 +1,322 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+
+------------------------------------------------------------
+ENTITY tb_tcp_client_rst_unexpected IS
+END tb_tcp_client_rst_unexpected;
+------------------------------------------------------------
+
+ARCHITECTURE behavior OF tb_tcp_client_rst_unexpected IS
+
+  -------------------- COMPONENT DECLARATION ---------------------
+  COMPONENT tcp_client IS
+    PORT (
+      clock       : IN  std_logic;
+      reset       : IN  std_logic;
+
+      connect     : IN  std_logic;
+
+      server_mac  : IN  std_logic_vector(47 downto 0);
+      server_ip   : IN  std_logic_vector(31 downto 0);
+      server_port : IN  std_logic_vector(15 downto 0);
+
+      client_mac  : IN  std_logic_vector(47 downto 0);
+      client_ip   : IN  std_logic_vector(31 downto 0);
+      client_port : IN  std_logic_vector(15 downto 0);
+
+      is_connected : OUT std_logic;
+
+      in_data   : IN  std_logic_vector(7 downto 0);
+      in_valid  : IN  std_logic;
+      in_sop    : IN  std_logic;
+      in_eop    : IN  std_logic;
+      in_ready  : OUT std_logic;
+
+      out_data  : OUT std_logic_vector(7 downto 0);
+      out_valid : OUT std_logic;
+      out_sop   : OUT std_logic;
+      out_eop   : OUT std_logic;
+      out_ready : IN  std_logic
+    );
+  END COMPONENT;
+
+  ---------------------------- clock period definitions ------------------
+  CONSTANT CLK_PERIOD : time := 20 ns;
+  CONSTANT FRAME_LEN  : integer := 54;
+
+  SUBTYPE byte_t IS std_logic_vector(7 downto 0);
+  TYPE byte_array_t IS array (0 to FRAME_LEN-1) OF byte_t;
+
+  --------------------------- UUT signals (inputs) ------------------------
+  SIGNAL clk     : std_logic := '0';
+  SIGNAL rst     : std_logic := '0';
+  SIGNAL connect : std_logic := '0';
+
+  SIGNAL server_mac  : std_logic_vector(47 downto 0) := x"112233445566";
+  SIGNAL server_ip   : std_logic_vector(31 downto 0) := x"C0A80101";
+  SIGNAL server_port : std_logic_vector(15 downto 0) := x"1F90";
+
+  SIGNAL client_mac  : std_logic_vector(47 downto 0) := x"AABBCCDDEEFF";
+  SIGNAL client_ip   : std_logic_vector(31 downto 0) := x"C0A80164";
+  SIGNAL client_port : std_logic_vector(15 downto 0) := x"04D2";
+
+  SIGNAL in_data  : std_logic_vector(7 downto 0) := (others => '0');
+  SIGNAL in_valid : std_logic := '0';
+  SIGNAL in_sop   : std_logic := '0';
+  SIGNAL in_eop   : std_logic := '0';
+
+  SIGNAL out_ready : std_logic := '1';
+
+  ------------------------- UUT signals (outputs) -------------------------
+  SIGNAL is_connected : std_logic;
+
+  SIGNAL in_ready  : std_logic;
+
+  SIGNAL out_data  : std_logic_vector(7 downto 0);
+  SIGNAL out_valid : std_logic;
+  SIGNAL out_sop   : std_logic;
+  SIGNAL out_eop   : std_logic;
+
+  -- ===== Helpers (isto kao kod u UUT-u) =====
+  FUNCTION hi8(x : std_logic_vector(15 downto 0)) RETURN byte_t IS
+  BEGIN
+    RETURN x(15 downto 8);
+  END;
+
+  FUNCTION lo8(x : std_logic_vector(15 downto 0)) RETURN byte_t IS
+  BEGIN
+    RETURN x(7 downto 0);
+  END;
+
+  FUNCTION b31_24(x : std_logic_vector(31 downto 0)) RETURN byte_t IS
+  BEGIN
+    RETURN x(31 downto 24);
+  END;
+
+  FUNCTION b23_16(x : std_logic_vector(31 downto 0)) RETURN byte_t IS
+  BEGIN
+    RETURN x(23 downto 16);
+  END;
+
+  FUNCTION b15_8(x : std_logic_vector(31 downto 0)) RETURN byte_t IS
+  BEGIN
+    RETURN x(15 downto 8);
+  END;
+
+  FUNCTION b7_0(x : std_logic_vector(31 downto 0)) RETURN byte_t IS
+  BEGIN
+    RETURN x(7 downto 0);
+  END;
+
+  FUNCTION build_server_frame(
+    dst_mac   : std_logic_vector(47 downto 0);
+    src_mac   : std_logic_vector(47 downto 0);
+    src_ip    : std_logic_vector(31 downto 0);
+    dst_ip    : std_logic_vector(31 downto 0);
+    src_port  : std_logic_vector(15 downto 0);
+    dst_port  : std_logic_vector(15 downto 0);
+    tcp_flags : byte_t
+  ) RETURN byte_array_t IS
+    VARIABLE f : byte_array_t;
+    CONSTANT IP_OFF  : integer := 14;
+    CONSTANT TCP_OFF : integer := 14 + 20;
+  BEGIN
+    FOR i IN 0 TO FRAME_LEN-1 LOOP
+      f(i) := (others => '0');
+    END LOOP;
+
+    -- Ethernet
+    f(0)  := dst_mac(47 downto 40); f(1)  := dst_mac(39 downto 32);
+    f(2)  := dst_mac(31 downto 24); f(3)  := dst_mac(23 downto 16);
+    f(4)  := dst_mac(15 downto 8 ); f(5)  := dst_mac(7 downto 0 );
+    f(6)  := src_mac(47 downto 40); f(7)  := src_mac(39 downto 32);
+    f(8)  := src_mac(31 downto 24); f(9)  := src_mac(23 downto 16);
+    f(10) := src_mac(15 downto 8 ); f(11) := src_mac(7 downto 0 );
+    f(12) := x"08"; f(13) := x"00";
+
+    -- IPv4 minimal (UUT provjerava: v4/ihl=45, proto=06, src/dst IP)
+    f(IP_OFF + 0) := x"45";
+    f(IP_OFF + 1) := x"00";
+    f(IP_OFF + 2) := x"00";
+    f(IP_OFF + 3) := x"28";
+    f(IP_OFF + 6) := x"40";
+    f(IP_OFF + 8) := x"40";
+    f(IP_OFF + 9) := x"06";
+
+    f(IP_OFF + 12) := b31_24(src_ip);
+    f(IP_OFF + 13) := b23_16(src_ip);
+    f(IP_OFF + 14) := b15_8 (src_ip);
+    f(IP_OFF + 15) := b7_0  (src_ip);
+
+    f(IP_OFF + 16) := b31_24(dst_ip);
+    f(IP_OFF + 17) := b23_16(dst_ip);
+    f(IP_OFF + 18) := b15_8 (dst_ip);
+    f(IP_OFF + 19) := b7_0  (dst_ip);
+
+    -- TCP ports + flags
+    f(TCP_OFF + 0) := hi8(src_port);
+    f(TCP_OFF + 1) := lo8(src_port);
+    f(TCP_OFF + 2) := hi8(dst_port);
+    f(TCP_OFF + 3) := lo8(dst_port);
+
+    f(TCP_OFF + 12) := x"50";
+    f(TCP_OFF + 13) := tcp_flags;  -- x"14" = RST+ACK
+
+    RETURN f;
+  END FUNCTION;
+
+  PROCEDURE send_rx_frame(
+    SIGNAL clk_s   : IN  std_logic;
+    SIGNAL s_ready : IN  std_logic;
+    SIGNAL s_valid : OUT std_logic;
+    SIGNAL s_sop   : OUT std_logic;
+    SIGNAL s_eop   : OUT std_logic;
+    SIGNAL s_data  : OUT std_logic_vector(7 downto 0);
+    CONSTANT frame : IN  byte_array_t
+  ) IS
+    VARIABLE i : integer := 0;
+  BEGIN
+    -- Wait until UUT asserts in_ready (WAIT_RX should have in_ready = '1')
+    WHILE s_ready /= '1' LOOP
+      WAIT UNTIL rising_edge(clk_s);
+    END LOOP;
+
+    i := 0;
+    WHILE i < FRAME_LEN LOOP
+      s_valid <= '1';
+      s_data  <= frame(i);
+
+      IF i = 0 THEN s_sop <= '1'; ELSE s_sop <= '0'; END IF;
+      IF i = FRAME_LEN-1 THEN s_eop <= '1'; ELSE s_eop <= '0'; END IF;
+
+      WAIT UNTIL rising_edge(clk_s);
+
+      IF s_ready = '1' THEN
+        i := i + 1;
+      END IF;
+    END LOOP;
+
+    s_valid <= '0';
+    s_sop   <= '0';
+    s_eop   <= '0';
+    s_data  <= (others => '0');
+  END PROCEDURE;
+
+  PROCEDURE wait_tx_frame_done(
+    SIGNAL clk_s    : IN std_logic;
+    SIGNAL o_valid  : IN std_logic;
+    SIGNAL o_ready  : IN std_logic;
+    SIGNAL o_sop    : IN std_logic;
+    SIGNAL o_eop    : IN std_logic
+  ) IS
+    VARIABLE saw_sop : boolean := false;
+  BEGIN
+    -- wait SOP accepted
+    LOOP
+      WAIT UNTIL rising_edge(clk_s);
+      IF (o_valid = '1') AND (o_ready = '1') AND (o_sop = '1') THEN
+        saw_sop := true;
+        EXIT;
+      END IF;
+    END LOOP;
+
+    -- then wait EOP accepted
+    WHILE saw_sop LOOP
+      WAIT UNTIL rising_edge(clk_s);
+      IF (o_valid = '1') AND (o_ready = '1') AND (o_eop = '1') THEN
+        EXIT;
+      END IF;
+    END LOOP;
+  END PROCEDURE;
+
+BEGIN
+
+  ------------------ Instantiation (uut) --------------------
+  uut: tcp_client
+    PORT MAP (
+      clock => clk,
+      reset => rst,
+      connect => connect,
+
+      server_mac  => server_mac,
+      server_ip   => server_ip,
+      server_port => server_port,
+
+      client_mac  => client_mac,
+      client_ip   => client_ip,
+      client_port => client_port,
+
+      is_connected => is_connected,
+
+      in_data  => in_data,
+      in_valid => in_valid,
+      in_sop   => in_sop,
+      in_eop   => in_eop,
+      in_ready => in_ready,
+
+      out_data  => out_data,
+      out_valid => out_valid,
+      out_sop   => out_sop,
+      out_eop   => out_eop,
+      out_ready => out_ready
+    );
+
+  ------------------ Clock process definitions --------------------
+  clock_process: PROCESS
+  BEGIN
+    clk <= '1';
+    WAIT FOR CLK_PERIOD/2;
+    clk <= '0';
+    WAIT FOR CLK_PERIOD/2;
+  END PROCESS;
+
+  ----------------------------- stimulus process ---------------------
+  stim_proc: PROCESS
+    VARIABLE rst_frame : byte_array_t;
+  BEGIN
+    -- init
+    in_valid <= '0';
+    in_sop   <= '0';
+    in_eop   <= '0';
+    in_data  <= (others => '0');
+
+    out_ready <= '1';
+
+    rst <= '1';
+    connect <= '0';
+    WAIT FOR 5*CLK_PERIOD;
+    rst <= '0';
+
+    -- start connect
+    WAIT FOR 5*CLK_PERIOD;
+    connect <= '1';
+    WAIT FOR 2*CLK_PERIOD;
+    connect <= '0';
+
+    -- UUT sends SYN
+    wait_tx_frame_done(clk, out_valid, out_ready, out_sop, out_eop);
+
+    -- Server sends RST (+ACK) instead of SYN-ACK
+    rst_frame := build_server_frame(
+      dst_mac   => client_mac,
+      src_mac   => server_mac,
+      src_ip    => server_ip,
+      dst_ip    => client_ip,
+      src_port  => server_port,
+      dst_port  => client_port,
+      tcp_flags => x"14"
+    );
+    send_rx_frame(clk, in_ready, in_valid, in_sop, in_eop, in_data, rst_frame);
+
+    -- UUT should NOT connect
+    WAIT FOR 20*CLK_PERIOD;
+    ASSERT is_connected = '0'
+      REPORT "RST_UNEXPECTED: is_connected je 1, a dobio je RST!"
+      SEVERITY error;
+
+    WAIT;
+  END PROCESS;
+
+END behavior;
+

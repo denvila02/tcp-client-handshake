@@ -1,0 +1,198 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+
+------------------------------------------------------------
+ENTITY tb_tcp_client_timeout IS
+END tb_tcp_client_timeout;
+------------------------------------------------------------
+
+ARCHITECTURE behavior OF tb_tcp_client_timeout IS
+
+  -------------------- COMPONENT DECLARATION ---------------------
+  COMPONENT tcp_client IS
+    PORT (
+      clock       : IN  std_logic;
+      reset       : IN  std_logic;
+
+      connect     : IN  std_logic;
+
+      server_mac  : IN  std_logic_vector(47 downto 0);
+      server_ip   : IN  std_logic_vector(31 downto 0);
+      server_port : IN  std_logic_vector(15 downto 0);
+
+      client_mac  : IN  std_logic_vector(47 downto 0);
+      client_ip   : IN  std_logic_vector(31 downto 0);
+      client_port : IN  std_logic_vector(15 downto 0);
+
+      is_connected : OUT std_logic;
+
+      in_data   : IN  std_logic_vector(7 downto 0);
+      in_valid  : IN  std_logic;
+      in_sop    : IN  std_logic;
+      in_eop    : IN  std_logic;
+      in_ready  : OUT std_logic;
+
+      out_data  : OUT std_logic_vector(7 downto 0);
+      out_valid : OUT std_logic;
+      out_sop   : OUT std_logic;
+      out_eop   : OUT std_logic;
+      out_ready : IN  std_logic
+    );
+  END COMPONENT;
+
+  ---------------------------- clock period definitions ------------------
+  CONSTANT CLK_PERIOD : time := 20 ns;
+
+  --------------------------- UUT signals (inputs) ------------------------
+  SIGNAL clk     : std_logic := '0';
+  SIGNAL rst     : std_logic := '0';
+  SIGNAL connect : std_logic := '0';
+
+  SIGNAL server_mac  : std_logic_vector(47 downto 0) := x"112233445566";
+  SIGNAL server_ip   : std_logic_vector(31 downto 0) := x"C0A80101";
+  SIGNAL server_port : std_logic_vector(15 downto 0) := x"1F90";
+
+  SIGNAL client_mac  : std_logic_vector(47 downto 0) := x"AABBCCDDEEFF";
+  SIGNAL client_ip   : std_logic_vector(31 downto 0) := x"C0A80164";
+  SIGNAL client_port : std_logic_vector(15 downto 0) := x"04D2";
+
+  SIGNAL in_data  : std_logic_vector(7 downto 0) := (others => '0');
+  SIGNAL in_valid : std_logic := '0';
+  SIGNAL in_sop   : std_logic := '0';
+  SIGNAL in_eop   : std_logic := '0';
+
+  SIGNAL out_ready : std_logic := '1';
+
+  ------------------------- UUT signals (outputs) -------------------------
+  SIGNAL is_connected : std_logic;
+
+  SIGNAL in_ready  : std_logic;
+
+  SIGNAL out_data  : std_logic_vector(7 downto 0);
+  SIGNAL out_valid : std_logic;
+  SIGNAL out_sop   : std_logic;
+  SIGNAL out_eop   : std_logic;
+
+  ------------------------------------------------------------------------
+  -- Wait until a TX frame completes: SOP accepted then EOP accepted.
+  ------------------------------------------------------------------------
+  PROCEDURE wait_tx_frame_done(
+    SIGNAL clk_s   : IN std_logic;
+    SIGNAL o_valid : IN std_logic;
+    SIGNAL o_ready : IN std_logic;
+    SIGNAL o_sop   : IN std_logic;
+    SIGNAL o_eop   : IN std_logic
+  ) IS
+    VARIABLE saw_sop : boolean := false;
+  BEGIN
+    -- Wait SOP accepted
+    LOOP
+      WAIT UNTIL rising_edge(clk_s);
+      IF (o_valid = '1') AND (o_ready = '1') AND (o_sop = '1') THEN
+        saw_sop := true;
+        EXIT;
+      END IF;
+    END LOOP;
+
+    -- Wait EOP accepted
+    WHILE saw_sop LOOP
+      WAIT UNTIL rising_edge(clk_s);
+      IF (o_valid = '1') AND (o_ready = '1') AND (o_eop = '1') THEN
+        EXIT;
+      END IF;
+    END LOOP;
+  END PROCEDURE;
+
+BEGIN
+
+  ------------------ Instantiation (uut) --------------------
+  uut: tcp_client
+    PORT MAP (
+      clock => clk,
+      reset => rst,
+      connect => connect,
+
+      server_mac  => server_mac,
+      server_ip   => server_ip,
+      server_port => server_port,
+
+      client_mac  => client_mac,
+      client_ip   => client_ip,
+      client_port => client_port,
+
+      is_connected => is_connected,
+
+      in_data  => in_data,
+      in_valid => in_valid,
+      in_sop   => in_sop,
+      in_eop   => in_eop,
+      in_ready => in_ready,
+
+      out_data  => out_data,
+      out_valid => out_valid,
+      out_sop   => out_sop,
+      out_eop   => out_eop,
+      out_ready => out_ready
+    );
+
+  ------------------ Clock process definitions --------------------
+  clock_process: PROCESS
+  BEGIN
+    clk <= '1';
+    WAIT FOR CLK_PERIOD/2;
+    clk <= '0';
+    WAIT FOR CLK_PERIOD/2;
+  END PROCESS;
+
+  ----------------------------- stimulus process ---------------------
+  stim_proc: PROCESS
+  BEGIN
+    -- Server does not send anything
+    in_valid <= '0';
+    in_sop   <= '0';
+    in_eop   <= '0';
+    in_data  <= (others => '0');
+
+    out_ready <= '1';
+
+    -- Reset
+    rst <= '1';
+    connect <= '0';
+    WAIT FOR 5*CLK_PERIOD;
+    rst <= '0';
+
+    -- Connect pulse
+    WAIT FOR 5*CLK_PERIOD;
+    connect <= '1';
+    WAIT FOR 2*CLK_PERIOD;
+    connect <= '0';
+
+    -- UUT sends SYN
+    wait_tx_frame_done(clk, out_valid, out_ready, out_sop, out_eop);
+
+    -- No SYN-ACK => wait for timeout.
+    -- UUT TIMEOUT_CYCLES=250; with CLK_PERIOD=20ns => 250*20ns = 5us
+    WAIT FOR 6 us;
+
+    -- Must still be NOT connected
+    ASSERT is_connected = '0'
+      REPORT "TIMEOUT: is_connected je 1 a server nista nije poslao!"
+      SEVERITY error;
+
+    -- Verify it returns to IDLE by requesting connect again and expecting a new SYN
+    connect <= '1';
+    WAIT FOR 2*CLK_PERIOD;
+    connect <= '0';
+
+    wait_tx_frame_done(clk, out_valid, out_ready, out_sop, out_eop);
+
+    ASSERT true
+      REPORT "TIMEOUT: OK (timeout se desio, UUT poslao novi SYN nakon ponovnog connect)."
+      SEVERITY note;
+
+    WAIT;
+  END PROCESS;
+
+END behavior;
+
