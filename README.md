@@ -203,7 +203,16 @@ Stanje **TX ACK** predstavlja fazu slanja ACK paketa kojim se završava proces u
 Po završetku three-way-handshake procesa, FSM ulazi u stanje **CONNECTED**, u kojem se nalazi tokom normalnog rada sistema. U ovom stanju omogućena je dvosmjerna razmjena podataka između klijenta i servera, uz stalno poštivanje ready/valid handshaking mehanizma. FSM ostaje u ovom stanju sve dok ne dođe do zahtjeva za prekid veze ili greške koja zahtijeva resetovanje konekcije.
 
 ## Implementacija
+TCP klijentski modul realizovan je korištenjem jezika za opis hardvera VHDL i zasniva se na konačnom automatu stanja (FSM) koji upravlja cjelokupnim procesom TCP komunikacije. Komunikacija sa okruženjem ostvarena je putem Avalon Streaming (Avalon-ST) sučelja, uz primjenu standardnog ready/valid mehanizma za sinhronizaciju i kontrolu protoka podataka.
 
+Modul prima Ethernet okvire bajt-po-bajt, pri čemu se dolazni podaci sekvencijalno obrađuju i po potrebi skladište u interne registre/bafer. Obrada paketa organizovana je kroz FSM stanja koja obuhvataju prijem i provjeru Ethernet, IPv4 i TCP zaglavlja, kao i upravljanje TCP stanjima na klijentskoj strani.
+
+Validnost primljenog paketa provjerava se analizom destinacijske MAC adrese, EtherType polja, IP protokola, destinacijske IP adrese, TCP portova i relevantnih TCP zastavica (SYN, ACK, FIN). Na osnovu tih informacija FSM prelazi u odgovarajuće stanje TCP protokola (npr. inicijalizacija veze, uspostava veze ili razmjena podataka).
+
+TCP klijent implementira osnovni three-way handshake mehanizam, pri čemu generiše TCP segmente sa odgovarajućim zastavicama (SYN, SYN-ACK, ACK). Izlazni paketi se formiraju zamjenom izvorišnih i odredišnih MAC i IP adresa, kao i TCP portova, te se šalju sekvencijalno, bajt-po-bajt, uz poštivanje out_ready signala i pravilno označavanje početka i kraja okvira. 
+
+Na sljedećoj slici imamo prikaz compilation reporta iz Quartus Prime-a.
+![Slika 12: Quartus Prime compilation report -uspješna kompilacija modula](VHDL_tcp_client/rezultati/compilation report.jpg)
 ## Zaključak
 
 ## Literatura
