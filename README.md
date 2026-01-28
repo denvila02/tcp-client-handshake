@@ -220,10 +220,7 @@ Vidimo da se dobijeni generisani FSM dijagram stanja poklapa sa našim dijagramo
 ## Verifikacija pomoću simulacijskog alata ModelSim
 U nastavku će biti obrađena verifikacija ispravnosti rada implementiranog modula pomoću simulacije, poredeći dobijene rezultate sa prethodno prikazanim scenarijima implementiranim u Wavedrom-u (slike 7, 8, 9 i 10).
 Verifikacija funkcionalnosti implementiranog VHDL modula izvršena je korištenjem testbencha razvijenog u jeziku VHDL, a simulacije su provedene u alatu ModelSim. Cilj simulacije je potvrda ispravnog funkcionisanja FSM logike, pravilne obrade zaglavlja protokola, korektnih prelaza između TCP stanja, kao i ispravnog formiranja izlaznih paketa. Rezultati simulacije analizirani su posmatranjem internih signala i izlaznog toka podataka u vremenskom dijagramu ModelSima. Na sljedećim slikama su prikazani compilation reporti pisanih testbencha.
-![Slika 14: ModelSim compilation report - uspješna kompilacija testbencha 1](VHDL_tcp_client/rezultati/comp_rep_full_speed.JPG)
-![Slika 15: ModelSim compilation report - uspješna kompilacija testbencha 2](VHDL_tcp_client/rezultati/comp_rep_ready_valid.JPG)
-![Slika 16: ModelSim compilation report - uspješna kompilacija testbencha 3](VHDL_tcp_client/rezultati/comp_rep_rst.JPG)
-![Slika 17: ModelSim compilation report - uspješna kompilacija testbencha 4](VHDL_tcp_client/rezultati/comp_rep_timeout.JPG)
+![Slika 14: ModelSim compilation report - uspješna kompilacija testbencha](VHDL_tcp_client/rezultati/tb_comp_rep_final.png)
 ### Testni scenarij 1: Uspješna uspostava TCP konekcije
 U prvom scenariju verificiran je rad TCP_client modula kada proces uspostave konekcije teče ispravno bez ikakvih zastajkivanja (ready/valid mehanizam) ili pogrešno poslanih polja. Klijent šalje SYN segment, zatim prima SYN+ACK te konačno šalje ACK segment. FSM prelazi iz stanja u stanje potpuno očekivano i na kraju zaustavlja se u **CONNECTED** stanju i klijent je spreman za dalju razmjenu podataka. Na sljedećoj slici je prikazan kompletan testbench wave dijagram, te zatim slijede slike koje radi preglednosti prikazuju manje vremenske intervale istog vremenskog dijagrama.
 ![Slika 18: ](VHDL_tcp_client/rezultati/tb_full_speed_final.png)
