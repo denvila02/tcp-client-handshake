@@ -214,7 +214,7 @@ TCP klijent implementira osnovni three-way handshake mehanizam, pri čemu generi
 Na sljedećoj slici imamo prikaz compilation reporta iz Quartus Prime-a.
 ![Slika 12: Quartus Prime compilation report -uspješna kompilacija modula](VHDL_tcp_client/rezultati/compilation_report.JPG)
 Verifikaciju FSM dijagrama stanja možemo izvršiti pomoću Quartus alata - State Machine Viewer. Na sljedećoj slici imamo dobijeni FSM dijagram stanja za kompajlirani VHDL kod. 
-![Slika 13: Quartus Prime state machine viewer - FSM dijagram stanja](VHDL_tcp_client/rezultati/compilation_report.JPG)
+![Slika 13: Quartus Prime state machine viewer - FSM dijagram stanja](VHDL_tcp_client/rezultati/fsm_dijagram.JPG)
 ## Zaključak
 
 ## Literatura
