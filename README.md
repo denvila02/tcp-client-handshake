@@ -182,6 +182,7 @@ Na slici 11 prikazan je FSM dijagram stanja TCP klijentske strane realiziran kao
 ![Slika 11: FSM dijagram stanja TCP klijentske strane](fsm_tcp_client/fsm_tcp_client.png)
 
 Slika 11: FSM dijagram stanja TCP klijentske strane
+
 Bojama je pokušano olakšati razumjevanje ovakve vizuelne interpretacije FSM-a. Naime bijeli krugovi su očekivana stanja ispravne TCP konekcije, plavim je označeno idle stanje. Rozim su označenja stanja tzv. slow read-a koja označavaju da klijentska ili serverska strana nisu u stanju čitati podatke (`out_ready`/`in_ready signali`) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. Zelenim su označena stanja tzv. slow write-a koja označavaju da klijentska ili serverska strana nisu u stanju slati podatke (`out_valid`/`in_valid` signali) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. 
 ### Opis FSM stanja
 FSM započinje u stanju **IDLE**, u kojem se sistem nalazi nakon resetovanja ili nakon prekida postojeće konekcije/neuspjelog procesa konekcije. U ovom stanju ne postoji aktivna komunikacija i svi izlazni signali su u neaktivnom stanju. FSM čeka zahtjev za uspostavu konekcije, a pri `connect='1' prelazi u stanje pripreme slanja inicijalnog paketa (SYN segment).
@@ -215,10 +216,12 @@ Na sljedećoj slici imamo prikaz compilation reporta iz Quartus Prime-a.
 ![Slika 12: Quartus Prime compilation report - uspješna kompilacija modula](VHDL_tcp_client/rezultati/compilation_report.JPG)
 
 Slika 12: Quartus Prime compilation report - uspješna kompilacija modula
+
 Verifikaciju FSM dijagrama stanja možemo izvršiti pomoću Quartus alata - State Machine Viewer. Na sljedećoj slici imamo dobijeni FSM dijagram stanja za kompajlirani VHDL kod. 
 ![Slika 13: Quartus Prime state machine viewer - FSM dijagram stanja](VHDL_tcp_client/rezultati/fsm_dijagram.JPG)
 
 Slika 13: Quartus Prime state machine viewer - FSM dijagram stanja
+
 Vidimo da se dobijeni generisani FSM dijagram stanja poklapa sa našim dijagramom sa slike 11. 
 
 ## Verifikacija pomoću simulacijskog alata ModelSim
@@ -227,6 +230,7 @@ Verifikacija funkcionalnosti implementiranog VHDL modula izvršena je korištenj
 ![Slika 14: ModelSim compilation report - uspješna kompilacija testbencha](VHDL_tcp_client/rezultati/tb_comp_rep_final.jpg)
 
 Slika 14: ModelSim compilation report - uspješna kompilacija testbencha
+
 ### Testni scenarij 1: Uspješna uspostava TCP konekcije
 U prvom scenariju verificiran je rad TCP_client modula kada proces uspostave konekcije teče ispravno bez ikakvih zastajkivanja (ready/valid mehanizam) ili pogrešno poslanih polja. Klijent šalje SYN segment, zatim prima SYN+ACK te konačno šalje ACK segment. FSM prelazi iz stanja u stanje potpuno očekivano i na kraju zaustavlja se u **CONNECTED** stanju i klijent je spreman za dalju razmjenu podataka. Na sljedećoj slici je prikazan kompletan testbench wave dijagram, te zatim slijede slike koje radi preglednosti prikazuju manje vremenske intervale istog vremenskog dijagrama.
 ![Slika 15: Verifikacija rezultata pomoću ModelSim-a - Scenario 1](VHDL_tcp_client/rezultati/tb_full_speed_final.png)
@@ -235,10 +239,30 @@ Slika 15: Verifikacija rezultata pomoću ModelSim-a - Scenario 1
 
 Vidimo poklapanje dobijenih vremenskih oblika signala sa onim prikazanim na wavedromu na slici 7, čime se potvrđuje ispravnost našeg dizajna.
 ### Testni scenarij 2: Uspješna uspostava TCP konekcije (demonstracija ready-valid mehanizma(backpressure))
-### Testni scenarij 3: Izostanak očekivanog SYN+ACK odgovora
-### Testni scenarij 4: Neočekivani odgovor servera (RST)
-## Zaključak
+U okviru drugog scenarija verificiran je rad TCP_client modula, identično prethodnom scenariju (uspješna konekcija), stim da je demonstriran rad read/valid mehanizma. Signali `out_ready` pri slanju i `in_valid` pri prijemu utiču na to da li će klijentska strana slati odnosno primati podatke u određenom trenutku. Demonstirana su oba slučaja i pri slanju i pri prijemu. 
+![Slika 16: Verifikacija rezultata pomoću ModelSim-a - Scenario 2](VHDL_tcp_client/rezultati/tb_ready_valid_final.png)
 
+Slika 16: Verifikacija rezultata pomoću ModelSim-a - Scenario 2
+
+Vidimo poklapanje dobijenih vremenskih oblika signala sa onim prikazanim na wavedromu na slici 8, čime se potvrđuje ispravnost našeg dizajna.
+### Testni scenarij 3: Izostanak očekivanog SYN+ACK odgovora
+Za scenarij tri je rečeno da klijent ne dobija očekivani SYN+ACK odgovor od strane servera, već RST+ACK segment koji u potpunosti terminira započetu konekciju od strane klijenta. Na sljedećoj slici je prikazan testbench wave dijagram u MultiSimu, pri čemu nije implementiran ready/valid mehanizam, već se komunikacija vršila full speed.
+![Slika 17: Verifikacija rezultata pomoću ModelSim-a - Scenario 3](VHDL_tcp_client/rezultati/tb_rst_final.png)
+
+Slika 17: Verifikacija rezultata pomoću ModelSim-a - Scenario 3
+### Testni scenarij 4: Neočekivani odgovor servera (RST)
+U scenariju četiri, imamo verifikaciju rada modula kada klijent od servera ne dobija odgovor u predviđenom vremenskom intervalu. Naime kao što je rečeno ranije, implementiran je timeout mehanizam koji će nakon 50 otkucanih clock intervala (50 je odabrano isključivo radi preglednosti dijgrama - veliki broj bi značio prevelike dijagrame). Na sljedećoj slici je prikazan testbench wave dijagram u MultiSimu u kojem nije implementiran ready/valid mehanizam.
+![Slika 17: Verifikacija rezultata pomoću ModelSim-a - Scenario 4](VHDL_tcp_client/rezultati/tb_timeout_final.png)
+
+Slika 17: Verifikacija rezultata pomoću ModelSim-a - Scenario 4
+## Zaključak
+U okviru ovog projekta realizovan je VHDL modul TCP klijentske strane koji omogućava prijem, analizu i obradu Ethernet okvira, kao i generisanje TCP segmenata u skladu sa osnovnim principima TCP/IP protokola. Modul je projektovan kao sekvencijalni sklop zasnovan na konačnom automatu stanja (FSM), uz korištenje Avalon Streaming (Avalon-ST) interfejsa i ready/valid handshake mehanizma, čime je obezbijeđen pouzdan (nema gubitka podataka), determinističan (jasno definisana stanja i način rada modula) i sinhronizovan prijenos podataka (svaka promjena se dešava na uzlaznu ivicu takta).
+
+Implementirani TCP klijent obuhvata obradu Ethernet, IPv4 i TCP zaglavlja, verifikaciju ispravnosti primljenih paketa, kao i upravljanje osnovnim TCP stanjima na klijentskoj strani, uključujući uspostavu veze putem three-way handshake mehanizma i razmjenu kontrolnih poruka. Posebna pažnja posvećena je pravilnom upravljanju TCP zastavicama, provjeri ispravnosti MAC, IP te PORT polja u primljenim paketima, kao i korektnom formiranju izlaznih paketa zamjenom izvorišnih i odredišnih adresa i portova.
+
+Funkcionalnost modula verifikovana je kroz FSM dijagrame, vremenske dijagrame i simulacije u ModelSim okruženju. Rezultati simulacija potvrđuju da modul ispravno prepoznaje validne Ethernet, IPv4 i TCP okvire, pouzdano ignoriše neispravne ili neadresirane pakete, te korektno generiše TCP odgovore u skladu sa trenutnim stanjem konekcije. Testirani scenariji pokazuju stabilno ponašanje modula i pravilnu saradnju sa okruženjem putem ready/valid mehanizma, bez gubitka podataka ili nekonzistentnih stanja.
+
+Dobijeni rezultati potvrđuju da realizovani TCP klijentski modul u potpunosti ispunjava definisane funkcionalne zahtjeve projekta i predstavlja stabilnu osnovu za dalji razvoj. Buduća unapređenja mogu obuhvatiti podršku za prenos korisničkih podataka (payload), implementaciju dodatnih TCP mehanizama kao što su kontrola protoka i retransmisija, realističniji timeout mehanizam te evenutalno podršku za više simultanih konekcija.
 ## Literatura
 [1] Kurose, James F., and Keith W. Ross. "Computer networking: A top-down approach edition." Addision Wesley 12 (2007).
 
