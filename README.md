@@ -1,4 +1,4 @@
-# tcp-client-handshake
+net_# tcp-client-handshake
 VHDL modul koji implementira klijentsku stranu uspostavljanja TCP konekcije.  
 
 ## Uvod
@@ -131,7 +131,7 @@ Verifikacija funkcionalnosti modula `tcp_client` vrši se simulacijom karakteris
 
 Simulira se standardni three-way handshake proces. Nakon aktivacije signala `connect`, modul generiše TCP SYN segment koji se šalje prema serveru. To će značiti da se formira segment sa SYN flag-om postavljenim na 1 te dodatno podešenim ostalim poljima TCP segmenta (kao što su 16-bitni izvorišni i destinacijski port). Taj segment će se slati preko 8-bitnog podatkovnog izlaza (`out_data`). Server odgovara SYN+ACK segmentom (SYN i ACK flag-ovi postavljeni na 1) koji se ispravno prima preko ulaznog Avalon-ST interfejsa (`in_data`, `in_valid`, `in_sop`, `in_eop`). Na osnovu primljenog odgovora, modul šalje završni ACK segment (ACK na 1) i postavlja signal `is_connected` na logičku vrijednost '1', čime se potvrđuje uspješna uspostava TCP konekcije.
 
-![Slika 7: Wavedrom za testni scenarij 1](images/wavedrom_uspjesna_konekcija_full_speed.png)
+![Slika 7: Wavedrom za testni scenarij 1](wavedromi/wavedrom_full_speed.png)
 
 Slika 7: Wavedrom za testni scenarij 1
 
@@ -139,20 +139,21 @@ Slika 7: Wavedrom za testni scenarij 1
 
 Isto kao u prethodnom scenariju simulira se standardni three-way handshake proces. Dodatno u dijelu gdje klijentska strana šalje SYN segment demonstiraran je rad ready-valid mehanizma. Naime u takt intervalu gdje se treba poslati deseti byte SYN segmenta signal `out_valid` postavlja se na '0'. To je znak da klijentska strana nije u mogućnosti da šalje podatke. Nakon otkucana 3 takt intervala `out_valid` se opet postavlja na '1' i imamo normalan prenos signala. To će se nastaviti sve do momenta slanja 17 byte-a SYN segmenta kad pomoću backpressure mehanizma serverska strana daje do znanja da nije u stanju primati nove podatke. Signal `out_ready` se postavlja na '0' i ostaje na toj vrijednosti narednih 8 takt intervala. Za to vrijeme klijentska strana će slati 17 byte SYN segmenta sve dok serverska strana ne bude u stanju pročitati taj byte, odnosno dok `out_ready` ne bude opet na '1'. Ostatak TCP Three-Way-Handshake-a je identičan kao u prethodnom scenariju i prenos je vršen bez dodatne demonstracije rada ready-valid mehanizma (full speed). 
 
-![Slika 8: Wavedrom za testni scenarij 2](images/wavedrom_uspjesna_konekcija_ready_valid_mehanizam_out.png)
+![Slika 8: Wavedrom za testni scenarij 2](wavedromi/wavedrom_ready_valid.png)
 
 Slika 8: Wavedrom za testni scenarij 2
 #### Testni scenarij 3: Izostanak očekivanog SYN+ACK odgovora
 
-U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Signal `is_connected` ostaje na logičkoj vrijednosti '0'. Time se potvrđuje da konekcija nije uspostavljena.
+U ovom scenariju modul šalje TCP SYN segment, ali ne prima odgovarajući SYN+ACK odgovor sa serverske strane. Modul ostaje u stanju čekanja odgovora i ne šalje završni ACK segment. Signal `is_connected` ostaje na logičkoj vrijednosti '0'. Time se potvrđuje da konekcija nije uspostavljena. Implementiran je i mehanizam timeout-a gdje, nakon određenog broja otkucaja takta (50), fsm se vraća u prvobitno stanje. 
 
+![Slika 9: Wavedrom za testni scenarij 3](wavedromi/wavedrom_timeout.png)
 Slika 9: Wavedrom za testni scenarij 3
 
 #### Testni scenarij 4: Neočekivani odgovor servera (RST)
 
 Simulira se scenario u kojem server odgovara TCP segmentom sa postavljenim RST flag-om. Nakon prijema RST(+ACK) segmenta modul detektuje neočekivan odgovor i prekida uspostavu konekcije, prestaje sa slanjem daljih segmenata (`out_valid` ostaje 0) i čeka novi connect za ponovni pokušaj, pri čemu `is_connected` ostaje 0.
 
-![Slika 10: Wavedrom za testni scenarij 4](images/wavedrom_rst.png)
+![Slika 10: Wavedrom za testni scenarij 4](wavedromi/wavedrom_rst_ack.png)
 
 Slika 10: Wavedrom za testni scenarij 4
 
@@ -178,7 +179,7 @@ prelazi iz stanja u stanje, te vrijednosti izlaza koje sistem proizvodi u svakom
 
 ### FSM dijagram
 Na slici 11 prikazan je FSM dijagram stanja TCP klijentske strane realiziran kao Mealy-jev automat: 
-![Slika 11: FSM dijagram stanja TCP klijentske strane](images/fsm.svg)
+![Slika 11: FSM dijagram stanja TCP klijentske strane](fsm_tcp_client.png)
 
 Slika 11: FSM dijagram stanja TCP klijentske strane
 Bojama je pokušano olakšati razumjevanje ovakve vizuelne interpretacije FSM-a. Naime bijeli krugovi su očekivana stanja ispravne TCP konekcije, plavim je označeno idle stanje. Rozim su označenja stanja tzv. slow read-a koja označavaju da klijentska ili serverska strana nisu u stanju čitati podatke (`out_ready`/`in_ready signali`) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. Zelenim su označena stanja tzv. slow write-a koja označavaju da klijentska ili serverska strana nisu u stanju slati podatke (`out_valid`/`in_valid` signali) te da prijem i slanje TCP poruka pomoću Avalon ST interfejsa nije neometano. 
